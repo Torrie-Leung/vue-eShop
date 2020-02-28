@@ -1,16 +1,15 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    Login compo
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'app'
 }
 </script>
 
-<style>
+<style  scoped>
 
 </style>
