@@ -7,10 +7,10 @@
 <script>
 
 export default {
-  name: 'app'
+  name: 'Login'
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 
 </style>
