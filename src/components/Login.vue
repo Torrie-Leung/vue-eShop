@@ -1,7 +1,16 @@
 <template>
   <div class="login_container">
     <div class="login_box">
-      d
+      <!-- avatar -->
+      <div class="avatar_box">
+        <img src="../assets/lsp.png" alt="">
+      </div>
+      <!-- login form -->
+      <el-form ref="form"  label-width="80px">
+        <el-form-item label="account">
+          <el-input ></el-input>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -12,7 +21,7 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style lang="less"  scoped>
 .login_container{
   background-color: #2b4b6b;
   height: 100%;
@@ -27,6 +36,23 @@ export default {
   top: 50%;
   /* 而translate可以在不知道宽高的情况下进行居中，tranlate（）函数中的百分比是相对于自身宽高的百分比，所以能进行居中。 */
   /* translate(-50%,-50%) 作用是，往上（x轴）,左（y轴）移动自身长宽的 50%，以使其居于中心位置。 */
-  translate: (-50%,-50%);
+  transform: translate(-50%,-50%);
+  .avatar_box {
+    height: 130px;
+    width: 130px;
+    border: 1px solid darkkhaki;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: plum;
+    box-shadow: 0 0 5px plum;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    img {
+      width:100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
 }
 </style>
