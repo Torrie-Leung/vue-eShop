@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 // import global css
 import './assets/css/global.css'
+// import font
+import './assets/fonts/iconfont.css'
 // import element-ui
 import elemUI from './plugins/element.js'
 

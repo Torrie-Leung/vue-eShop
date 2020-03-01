@@ -6,9 +6,19 @@
         <img src="../assets/lsp.png" alt="">
       </div>
       <!-- login form -->
-      <el-form ref="form"  label-width="80px">
-        <el-form-item label="account">
-          <el-input ></el-input>
+      <el-form ref="form"  label-width="0px" class="login_form">
+        <!-- user name -->
+        <el-form-item>
+          <el-input prefix-icon="iconfont icon-user"></el-input>
+        </el-form-item>
+        <!-- user password -->
+        <el-form-item>
+          <el-input prefix-icon="iconfont icon-3702mima"></el-input>
+        </el-form-item>
+        <!-- button area -->
+        <el-form-item class="btns">
+          <el-button type="primary" >Log in</el-button>
+          <el-button type="info" >Reset</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -54,5 +64,16 @@ export default {
       border-radius: 50%;
     }
   }
+}
+.login_form{
+  position: absolute;
+  box-sizing: border-box;
+  bottom: 0;
+  width: 100%;
+  padding: 0 15px;
+}
+.btns{
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
