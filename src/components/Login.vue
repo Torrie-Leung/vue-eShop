@@ -6,7 +6,7 @@
         <img src="../assets/lsp.png" alt="">
       </div>
       <!-- login form -->
-      <el-form ref="form" :model="loginForm" :rules="rules" label-width="0px" class="login_form">
+      <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" label-width="0px" class="login_form">
         <!-- user name -->
         <el-form-item prop="username">
           <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
@@ -18,7 +18,7 @@
         <!-- button area -->
         <el-form-item class="btns">
           <el-button type="primary" >Log in</el-button>
-          <el-button type="info" >Reset</el-button>
+          <el-button type="info" @click="resetLoginForm">Reset</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -30,23 +30,45 @@ export default {
   name: 'app',
   data () {
     return {
+      // login form data binding
       loginForm: {
         username: 'chimp',
         password: '123456'
       },
-      rules: {
-        username: {
-          required: true,
-          message: 'please input your account',
-          trigger: 'blur'
-        },
-        password: {
-          required: true,
-          min: 6,
-          message: 'password must be at least 6 digit number',
-          trigger: 'blur'
-        }
+      // login form validation
+      loginRules: {
+        username: [
+          {
+            required: true,
+            message: 'please input your account',
+            trigger: 'blur'
+          },
+          {
+            min: 3,
+            max: 5,
+            message: 'length should be 3 to 5',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: 'please input your password',
+            trigger: 'blur'
+          },
+          {
+            min: 6,
+            message: 'password must be at least 6 digit number',
+            trigger: 'blur'
+          }
+        ]
       }
+    }
+  },
+  methods: {
+    resetLoginForm () {
+      console.log(this.$refs)
+      this.$refs.loginFormRef.resetFields()
     }
   }
 }
