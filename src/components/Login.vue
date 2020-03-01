@@ -6,14 +6,14 @@
         <img src="../assets/lsp.png" alt="">
       </div>
       <!-- login form -->
-      <el-form ref="form"  label-width="0px" class="login_form">
+      <el-form ref="form" :model="loginForm"  label-width="0px" class="login_form">
         <!-- user name -->
         <el-form-item>
-          <el-input prefix-icon="iconfont icon-user"></el-input>
+          <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
         </el-form-item>
         <!-- user password -->
         <el-form-item>
-          <el-input prefix-icon="iconfont icon-3702mima"></el-input>
+          <el-input v-model="loginForm.password" type="password" prefix-icon="iconfont icon-3702mima"></el-input>
         </el-form-item>
         <!-- button area -->
         <el-form-item class="btns">
@@ -27,7 +27,15 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      loginForm: {
+        username: 'chimp',
+        password: '123456'
+      }
+    }
+  }
 }
 </script>
 
