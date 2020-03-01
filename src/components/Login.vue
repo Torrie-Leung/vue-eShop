@@ -6,13 +6,13 @@
         <img src="../assets/lsp.png" alt="">
       </div>
       <!-- login form -->
-      <el-form ref="form" :model="loginForm"  label-width="0px" class="login_form">
+      <el-form ref="form" :model="loginForm" :rules="rules" label-width="0px" class="login_form">
         <!-- user name -->
-        <el-form-item>
+        <el-form-item prop="username">
           <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
         </el-form-item>
         <!-- user password -->
-        <el-form-item>
+        <el-form-item prop="password">
           <el-input v-model="loginForm.password" type="password" prefix-icon="iconfont icon-3702mima"></el-input>
         </el-form-item>
         <!-- button area -->
@@ -33,6 +33,19 @@ export default {
       loginForm: {
         username: 'chimp',
         password: '123456'
+      },
+      rules: {
+        username: {
+          required: true,
+          message: 'please input your account',
+          trigger: 'blur'
+        },
+        password: {
+          required: true,
+          min: 6,
+          message: 'password must be at least 6 digit number',
+          trigger: 'blur'
+        }
       }
     }
   }
