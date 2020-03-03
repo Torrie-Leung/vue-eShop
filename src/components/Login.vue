@@ -17,7 +17,7 @@
         </el-form-item>
         <!-- button area -->
         <el-form-item class="btns">
-          <el-button type="primary" >Log in</el-button>
+          <el-button type="primary" @click="login">Log in</el-button>
           <el-button type="info" @click="resetLoginForm">Reset</el-button>
         </el-form-item>
       </el-form>
@@ -69,6 +69,11 @@ export default {
     resetLoginForm () {
       console.log(this.$refs)
       this.$refs.loginFormRef.resetFields()
+    },
+    login () {
+      this.$refs.loginFormRef.validate(valid => {
+        console.log(valid)
+      })
     }
   }
 }
