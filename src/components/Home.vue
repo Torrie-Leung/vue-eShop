@@ -2,7 +2,10 @@
   <el-container class="home-container">
     <!-- header section -->
     <el-header>
-      Header
+      <div class="header-name">
+        <img src="../assets/logo.png" alt="logo">
+        <span>Coding Jungle</span>
+      </div>
       <el-button type="info" @click="logOut">Log out</el-button>
     </el-header>
     <el-container>
@@ -40,7 +43,26 @@ export default {
   height: 100%;
 }
 .el-header{
-  background-color: #373d41
+  background-color: #373d41;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0;
+  color: #fff;
+  font-size: 24px;
+  line-height: 24px;
+  .header-name{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    img{
+      height: 60px;
+      width: 60px;
+    }
+    span{
+      margin-left: 10px;
+    }
+  }
 }
 .el-aside{
   background-color: #333744
