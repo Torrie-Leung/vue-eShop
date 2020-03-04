@@ -11,6 +11,13 @@ import elemUI from './plugins/element.js'
 import axios from 'axios'
 // request root path
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+// use axios' interceptor to add token to request
+axios.interceptors.request.use(config => {
+  console.log(config)
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  // must to return config in the end
+  return config
+})
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
