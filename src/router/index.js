@@ -15,4 +15,24 @@ const router = new VueRouter({
   routes
 })
 
+// hook navigation guard
+router.beforeEach((to, from, next) => {
+  // to: the url to visit
+  // from: come from which url
+  // next: the function permits the visit action
+  // next() -move on to the next hook in the pipeline
+  // next('./') -redirect to a different location.
+  const tokenStr = window.sessionStorage.getItem('token')
+  // use if/else to avoid duplicated require
+  if (to.path !== '/login' && !tokenStr) {
+    Vue.prototype.$message({
+      message: 'please log in first',
+      type: 'warning',
+      duration: 2000
+    })
+    next('./login')
+  } else {
+    next()
+  }
+})
 export default router
