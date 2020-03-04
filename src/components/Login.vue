@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: 'app',
+  name: 'Login',
   data () {
     return {
       // login form data binding
