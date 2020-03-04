@@ -71,9 +71,14 @@ export default {
       this.$refs.loginFormRef.resetFields()
     },
     login () {
-      this.$refs.loginFormRef.validate(valid => {
+      this.$refs.loginFormRef.validate(async valid => {
+        // console.log(valid)
         if (!valid) return false
-        this.$http.post('login',this.loginForm)
+        // use axios post login info and return a promise
+        // await only used in async function
+        // object destruction
+        const { data: res } = await this.$http.post('login', this.loginForm)
+        console.log(res)
       })
     }
   }
