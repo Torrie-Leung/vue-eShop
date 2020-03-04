@@ -32,7 +32,7 @@ export default {
     return {
       // login form data binding
       loginForm: {
-        username: 'chimp',
+        username: 'admin',
         password: '123456'
       },
       // login form validation
@@ -75,10 +75,22 @@ export default {
         // console.log(valid)
         if (!valid) return false
         // use axios post login info and return a promise
-        // await only used in async function
+        // await only used in async function, the function as a callback should be defined as async
         // object destruction
         const { data: res } = await this.$http.post('login', this.loginForm)
         console.log(res)
+        // login failed notification
+        if (res.meta.status !== 200) return this.$message.error('Login Failed.')
+        // login success notification
+        this.$message({
+          message: 'Login Success',
+          type: 'success',
+          duration: 2000
+        })
+        // save token to the session after login bcs token is only valid during the time visiting the site
+        window.sessionStorage.setItem('token', res.data.token)
+        // direct the route to the main page
+        this.$router.push('/home')
       })
     }
   }
