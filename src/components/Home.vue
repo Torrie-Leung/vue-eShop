@@ -19,40 +19,22 @@
           text-color="#fff"
           active-text-color="#ffd04b">
           <!-- 1st class menu -->
-          <el-submenu index="1">
+          <!-- concat '' to meet the props required type string -->
+          <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
             <!-- 1st class menu template -->
             <template slot="title">
               <!-- menu icon -->
               <i class="el-icon-location"></i>
               <!-- menu text -->
-              <span>导航一</span>
+              <span>{{item.authName}}</span>
             </template>
             <el-menu-item-group>
               <!-- 2nd class menu template -->
-              <el-menu-item index="1-1">
+              <el-menu-item :index="subItem.id + ''" v-for="subItem in item.children" :key="subItem.id">
                 <i class="el-icon-location"></i>
-                <span>选项1</span>
-              </el-menu-item>
-              <el-menu-item index="1-2">
-                <i class="el-icon-goods"></i>
-                <span>选项2</span>
-              </el-menu-item>
-              <el-menu-item index="1-3">
-                <i class="el-icon-s-order"></i>
-                <span>选项3</span>
+                <span>{{subItem.authName}}</span>
               </el-menu-item>
             </el-menu-item-group>
-            <el-submenu index="1-4">
-              <template slot="title">
-                <i class="el-icon-s-flag"></i>
-                <span>选项4</span>
-              </template>
-              <!-- 3rd class menu template -->
-              <el-menu-item index="1-4-1">
-                <i class="el-icon-s-finance"></i>
-                <span>选项1</span>
-              </el-menu-item>
-            </el-submenu>
           </el-submenu>
           <el-menu-item index="2">
             <i class="el-icon-menu"></i>
