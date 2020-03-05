@@ -14,7 +14,10 @@ import {
   MenuItemGroup,
   MenuItem,
   Breadcrumb,
-  BreadcrumbItem
+  BreadcrumbItem,
+  Card,
+  Row,
+  Col
 } from 'element-ui'
 
 // global register $message
@@ -35,4 +38,7 @@ export default Vue => {
   Vue.component(MenuItem.name, MenuItem)
   Vue.component(Breadcrumb.name, Breadcrumb)
   Vue.component(BreadcrumbItem.name, BreadcrumbItem)
+  Vue.component(Card.name, Card)
+  Vue.component(Row.name, Row)
+  Vue.component(Col.name, Col)
 }
