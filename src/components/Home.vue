@@ -74,7 +74,13 @@
 export default {
   name: 'LogOut',
   data () {
-    return {}
+    return {
+      // menu data
+      menuList: []
+    }
+  },
+  created () {
+    this.getMenuLists()
   },
   methods: {
     logOut () {
@@ -86,6 +92,14 @@ export default {
         duration: 2000
       })
       this.$router.push('/login')
+    },
+    // fetch all menu lists
+    async getMenuLists () {
+      const { data: res } = await this.$http.get('menus')
+      // if request failed, notificate with msg
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      console.log(res)
+      this.menuList = res.data
     }
   }
 }
@@ -119,8 +133,8 @@ export default {
 }
 .el-aside{
   background-color: #333744;
-  el-menu{
-    border-right:none;
+  .el-menu{
+    border-right:none !important;
   }
 }
 .el-main{
