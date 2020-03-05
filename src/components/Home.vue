@@ -2,8 +2,9 @@
   <el-container class="home-container">
     <!-- header section -->
     <el-header>
-      <div class="header-name">
-        <img src="../assets/logo.png" alt="logo">
+      <div class="header-name" @click="backHome">
+        <!-- <img src="../assets/forest.png" alt="logo"> -->
+        <div class="logo"></div>
         <span>Coding Jungle</span>
       </div>
       <el-button type="info" @click="logOut">Log out</el-button>
@@ -91,6 +92,9 @@ export default {
     this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
+    backHome () {
+      this.$router.push('/welcome')
+    },
     logOut () {
       // clear sessionStorage & redirect to the login page
       window.sessionStorage.clear()
@@ -140,12 +144,16 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    img{
-      height: 60px;
-      width: 60px;
+    cursor: pointer;
+    .logo{
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      background: url('../assets/forest.png') center no-repeat;
+      background-size: 126%;
     }
     span{
-      margin-left: 10px;
+      margin-left: 1px;
     }
   }
 }

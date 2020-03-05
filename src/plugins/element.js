@@ -12,7 +12,9 @@ import {
   Menu,
   Submenu,
   MenuItemGroup,
-  MenuItem
+  MenuItem,
+  Breadcrumb,
+  BreadcrumbItem
 } from 'element-ui'
 
 // global register $message
@@ -31,4 +33,6 @@ export default Vue => {
   Vue.component(Submenu.name, Submenu)
   Vue.component(MenuItemGroup.name, MenuItemGroup)
   Vue.component(MenuItem.name, MenuItem)
+  Vue.component(Breadcrumb.name, Breadcrumb)
+  Vue.component(BreadcrumbItem.name, BreadcrumbItem)
 }

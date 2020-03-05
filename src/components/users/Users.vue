@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h3>Users List</h3>
+    <h3>Users Management</h3>
+    <!-- breadcrumb nav -->
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">Home</el-breadcrumb-item>
+      <el-breadcrumb-item>Users List</el-breadcrumb-item>
+      <el-breadcrumb-item>Schedule</el-breadcrumb-item>
+    </el-breadcrumb>
   </div>
 </template>
 
