@@ -26,7 +26,27 @@
 
 <script>
 export default {
-  name: 'Users'
+  name: 'Users',
+  data () {
+    return {
+      // get user data params
+      queryInfo: {
+        query: '',
+        pagenum: 1,
+        pagesize: 3
+      }
+    }
+  },
+  created () {
+    this.getUserList()
+  },
+  methods: {
+    async getUserList () {
+      const { data: res } = await this.$http.get('users', { params: this.queryInfo })
+      if (res.meta.msg.status !== 200) return this.$message.error('Failed to fetch user list.')
+      console.log(res)
+    }
+  }
 }
 </script>
 
