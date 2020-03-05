@@ -526,3 +526,11 @@
 [2020-03-05T15:02:40.190] [DEBUG] cheese - admin
 [2020-03-05T15:02:40.194] [DEBUG] cheese - null
 [2020-03-05T15:02:40.194] [DEBUG] cheese - null
+[2020-03-05T15:14:06.781] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T15:14:06.781] [DEBUG] cheese - admin
+[2020-03-05T15:14:06.783] [DEBUG] cheese - null
+[2020-03-05T15:14:06.783] [DEBUG] cheese - null
+[2020-03-05T15:15:15.825] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T15:15:15.825] [DEBUG] cheese - admin
+[2020-03-05T15:15:15.827] [DEBUG] cheese - null
+[2020-03-05T15:15:15.828] [DEBUG] cheese - null

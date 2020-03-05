@@ -25,6 +25,7 @@
           unique-opened
           :collapse="isCollapse"
           :collapse-transition="false"
+          router
           >
           <!-- 1st class menu -->
           <!-- concat '' to meet the props required type string -->
@@ -38,7 +39,7 @@
             </template>
             <el-menu-item-group>
               <!-- 2nd class menu template -->
-              <el-menu-item :index="subItem.id + ''" v-for="subItem in item.children" :key="subItem.id">
+              <el-menu-item :index="'/' + subItem.path + ''" v-for="subItem in item.children" :key="subItem.id">
                 <i class="el-icon-menu"></i>
                 <span>{{subItem.authName}}</span>
               </el-menu-item>
