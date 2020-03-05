@@ -47,7 +47,10 @@
         </el-menu>
       </el-aside>
       <!-- main page section -->
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- router placeholder -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>

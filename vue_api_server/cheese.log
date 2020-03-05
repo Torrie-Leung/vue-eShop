@@ -502,3 +502,27 @@
 [2020-03-04T17:48:56.890] [DEBUG] cheese - admin
 [2020-03-04T17:48:56.893] [DEBUG] cheese - null
 [2020-03-04T17:48:56.893] [DEBUG] cheese - null
+[2020-03-05T14:58:34.972] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T14:58:34.976] [DEBUG] cheese - admin
+[2020-03-05T14:58:35.053] [DEBUG] cheese - null
+[2020-03-05T14:58:35.054] [DEBUG] cheese - null
+[2020-03-05T14:58:51.195] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T14:58:51.195] [DEBUG] cheese - admin
+[2020-03-05T14:58:51.200] [DEBUG] cheese - null
+[2020-03-05T14:58:51.200] [DEBUG] cheese - null
+[2020-03-05T15:01:46.285] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T15:01:46.285] [DEBUG] cheese - admin
+[2020-03-05T15:01:46.288] [DEBUG] cheese - null
+[2020-03-05T15:01:46.288] [DEBUG] cheese - null
+[2020-03-05T15:01:59.500] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T15:01:59.500] [DEBUG] cheese - admin
+[2020-03-05T15:01:59.503] [DEBUG] cheese - null
+[2020-03-05T15:01:59.503] [DEBUG] cheese - null
+[2020-03-05T15:02:21.020] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T15:02:21.020] [DEBUG] cheese - admin
+[2020-03-05T15:02:21.022] [DEBUG] cheese - null
+[2020-03-05T15:02:21.023] [DEBUG] cheese - null
+[2020-03-05T15:02:40.190] [DEBUG] cheese - login => username:admin,password:123456
+[2020-03-05T15:02:40.190] [DEBUG] cheese - admin
+[2020-03-05T15:02:40.194] [DEBUG] cheese - null
+[2020-03-05T15:02:40.194] [DEBUG] cheese - null
