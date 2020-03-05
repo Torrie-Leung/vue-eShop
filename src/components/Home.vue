@@ -10,14 +10,22 @@
     </el-header>
     <el-container>
       <!-- aside section -->
-      <el-aside width="205px">
+      <el-aside :width="toggleWidth">
+        <div class="toggle-menu-btn" @click="toggleMenu">
+          <span v-if="!isCollapse"><i class="el-icon-d-arrow-left"></i></span>
+          <span v-if="isCollapse"><i class="el-icon-d-arrow-right"></i></span>
+        </div>
         <!-- side menu -->
         <el-menu
           default-active="2"
           class="el-menu-vertical-demo"
           background-color="#333744"
           text-color="#fff"
-          active-text-color="#409EFF">
+          active-text-color="#409EFF"
+          unique-opened
+          :collapse="isCollapse"
+          :collapse-transition="false"
+          >
           <!-- 1st class menu -->
           <!-- concat '' to meet the props required type string -->
           <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
@@ -36,14 +44,6 @@
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <span slot="title">导航二</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-setting"></i>
-            <span slot="title">导航3</span>
-          </el-menu-item>
         </el-menu>
       </el-aside>
       <!-- main page section -->
@@ -66,7 +66,13 @@ export default {
         102: 'iconfont icon-shangpin',
         101: 'iconfont icon-danju',
         145: 'iconfont icon-baobiao'
-      }
+      },
+      isCollapse: false
+    }
+  },
+  computed: {
+    toggleWidth: function () {
+      return this.isCollapse ? '64px' : '205px'
     }
   },
   created () {
@@ -90,6 +96,10 @@ export default {
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       console.log(res)
       this.menuList = res.data
+    },
+    // toggle menu
+    toggleMenu () {
+      this.isCollapse = !this.isCollapse
     }
   }
 }
@@ -123,6 +133,14 @@ export default {
 }
 .el-aside{
   background-color: #333744;
+  .toggle-menu-btn{
+    background-color: #4A5064;
+    text-align: center;
+    color: #fff;
+    font-size: 10px;
+    line-height: 24px;
+    cursor: pointer;
+  }
   .el-menu{
     border-right:none !important;
     .el-submenu{
