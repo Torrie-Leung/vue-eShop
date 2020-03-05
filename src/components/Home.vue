@@ -17,21 +17,21 @@
           class="el-menu-vertical-demo"
           background-color="#333744"
           text-color="#fff"
-          active-text-color="#ffd04b">
+          active-text-color="#409EFF">
           <!-- 1st class menu -->
           <!-- concat '' to meet the props required type string -->
           <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
             <!-- 1st class menu template -->
             <template slot="title">
               <!-- menu icon -->
-              <i class="el-icon-location"></i>
+              <i :class="iconObj[item.id]"></i>
               <!-- menu text -->
               <span>{{item.authName}}</span>
             </template>
             <el-menu-item-group>
               <!-- 2nd class menu template -->
               <el-menu-item :index="subItem.id + ''" v-for="subItem in item.children" :key="subItem.id">
-                <i class="el-icon-location"></i>
+                <i class="el-icon-menu"></i>
                 <span>{{subItem.authName}}</span>
               </el-menu-item>
             </el-menu-item-group>
@@ -58,7 +58,15 @@ export default {
   data () {
     return {
       // menu data
-      menuList: []
+      menuList: [],
+      // customized icons
+      iconObj: {
+        125: 'iconfont icon-user',
+        103: 'iconfont icon-users',
+        102: 'iconfont icon-shangpin',
+        101: 'iconfont icon-danju',
+        145: 'iconfont icon-baobiao'
+      }
     }
   },
   created () {
@@ -117,6 +125,12 @@ export default {
   background-color: #333744;
   .el-menu{
     border-right:none !important;
+    .el-submenu{
+      .iconfont{
+        margin-left: 5px;
+        margin-right: 10px;
+      }
+    }
   }
 }
 .el-main{
