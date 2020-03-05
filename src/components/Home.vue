@@ -140,9 +140,17 @@ export default {
     font-size: 10px;
     line-height: 24px;
     cursor: pointer;
+    position: relative;
+    height: 24px;
+    span .el-icon-d-arrow-left{
+      display: inline-block;
+      position: absolute;
+      right: 20px;
+      top: 7px;
+    }
   }
   .el-menu{
-    border-right:none !important;
+    border-right:none;
     .el-submenu{
       .iconfont{
         margin-left: 5px;
