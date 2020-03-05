@@ -17,7 +17,6 @@
         </div>
         <!-- side menu -->
         <el-menu
-          default-active="2"
           class="el-menu-vertical-demo"
           background-color="#333744"
           text-color="#fff"
@@ -26,6 +25,7 @@
           :collapse="isCollapse"
           :collapse-transition="false"
           router
+          :default-active = 'activePath'
           >
           <!-- 1st class menu -->
           <!-- concat '' to meet the props required type string -->
@@ -39,7 +39,12 @@
             </template>
             <el-menu-item-group>
               <!-- 2nd class menu template -->
-              <el-menu-item :index="'/' + subItem.path + ''" v-for="subItem in item.children" :key="subItem.id">
+              <el-menu-item
+                :index="'/' + subItem.path + ''"
+                v-for="subItem in item.children"
+                :key="subItem.id"
+                @click="traceNavState('/' + subItem.path)"
+                >
                 <i class="el-icon-menu"></i>
                 <span>{{subItem.authName}}</span>
               </el-menu-item>
@@ -71,7 +76,9 @@ export default {
         101: 'iconfont icon-danju',
         145: 'iconfont icon-baobiao'
       },
-      isCollapse: false
+      isCollapse: false,
+      // active nav link
+      activePath: ''
     }
   },
   computed: {
@@ -81,6 +88,7 @@ export default {
   },
   created () {
     this.getMenuLists()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     logOut () {
@@ -104,6 +112,12 @@ export default {
     // toggle menu
     toggleMenu () {
       this.isCollapse = !this.isCollapse
+    },
+    // tracing clicking & save nav active status to sessionStorage
+    traceNavState (activePath) {
+      // console.log(activePath)
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   }
 }

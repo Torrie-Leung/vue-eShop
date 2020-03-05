@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h3>Welcome to the Coding Jungle</h3>
+    <h3>Users List</h3>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Weclome'
+  name: 'Users'
 }
 </script>
 
