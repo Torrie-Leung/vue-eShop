@@ -101,6 +101,7 @@
       :visible.sync="dialogVisible"
       width="40%"
       close-on-click-modal
+      @close="newUserFormClosed"
       >
       <!-- notification content -->
       <span>You're gonna add a new user.</span>
@@ -121,7 +122,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="confirmNewUser">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -137,7 +138,8 @@ export default {
       // reg to validate email address
       const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
       if (regEmail.test(value)) {
-        return callback
+        // do not forget callback's paren ()!!!!
+        return callback()
       } else {
         callback(new Error('please input valid email address'))
       }
@@ -146,7 +148,7 @@ export default {
       // reg to validate phone number
       const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
       if (regMobile.test(value)) {
-        return callback
+        return callback()
       } else {
         callback(new Error('please input valid phone number'))
       }
@@ -238,6 +240,20 @@ export default {
         message: 'user status updated.',
         type: 'success',
         duration: 1500
+      })
+    },
+    // listen to newUserForm closing event
+    newUserFormClosed () {
+      // this.$refs.newUserFormRef.resetFields()
+    },
+    // click btn to add new user
+    confirmNewUser () {
+      this.$refs.newUserFormRef.validate(valid => {
+        console.log(valid)
+        if (valid) {
+          console.log(1)
+          // this step could send http request
+        }
       })
     }
   }
