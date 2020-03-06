@@ -99,11 +99,26 @@
     <el-dialog
       title="Confirmation"
       :visible.sync="dialogVisible"
-      width="30%"
+      width="40%"
       close-on-click-modal
       >
       <!-- notification content -->
       <span>You're gonna add a new user.</span>
+      <!-- new user form validation -->
+      <el-form :model="newUserForm" :rules="newUserFormRules" ref="newUserFormRef" label-width="98px" >
+        <el-form-item label="Username" prop="username">
+          <el-input v-model="newUserForm.username"></el-input>
+        </el-form-item>
+        <el-form-item label="Password" prop="password">
+          <el-input v-model="newUserForm.password"></el-input>
+        </el-form-item>
+        <el-form-item label="Email" prop="email">
+          <el-input v-model="newUserForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="Mobile" prop="mobile">
+          <el-input v-model="newUserForm.mobile"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
@@ -130,7 +145,31 @@ export default {
       // total data item
       total: 0,
       // handle dialog's visibility
-      dialogVisible: false
+      dialogVisible: false,
+      // new user form data model
+      newUserForm: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
+      // new user form validation rules
+      newUserFormRules: {
+        username: [
+          { required: true, message: 'please input username', trigger: 'blur' },
+          { min: 3, max: 20, message: 'username should be 3 to 20 letters.', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: 'please input password', trigger: 'blur' },
+          { min: 6, max: 30, message: 'password should be at least 6 digits.', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: 'please input email', trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: 'please input your phone number', trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {
