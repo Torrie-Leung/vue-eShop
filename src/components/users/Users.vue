@@ -248,11 +248,21 @@ export default {
     },
     // click btn to add new user
     confirmNewUser () {
-      this.$refs.newUserFormRef.validate(valid => {
+      this.$refs.newUserFormRef.validate(async valid => {
         console.log(valid)
-        if (valid) {
-          console.log(1)
-          // this step could send http request
+        if (!valid) {
+          return false
+        } else {
+          const { data: res } = await this.$http.post('users', this.newUserForm)
+          if (res.meta.status !== 201) {
+            return this.$message.error('Failed to add new user.')
+          } else {
+            this.$message.success('New user added.')
+            // hide new user form dialog
+            this.dialogVisible = false
+            // reload user list
+            this.getUserList()
+          }
         }
       })
     }
