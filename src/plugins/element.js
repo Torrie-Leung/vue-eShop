@@ -17,7 +17,10 @@ import {
   BreadcrumbItem,
   Card,
   Row,
-  Col
+  Col,
+  Table,
+  TableColumn,
+  Switch
 } from 'element-ui'
 
 // global register $message
@@ -41,4 +44,7 @@ export default Vue => {
   Vue.component(Card.name, Card)
   Vue.component(Row.name, Row)
   Vue.component(Col.name, Col)
+  Vue.component(Table.name, Table)
+  Vue.component(TableColumn.name, TableColumn)
+  Vue.component(Switch.name, Switch)
 }

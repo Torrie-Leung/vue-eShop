@@ -20,6 +20,47 @@
           <el-button type="primary">Add User</el-button>
         </el-col>
       </el-row>
+      <!-- table section -->
+      <el-table
+        :data="userList"
+        border
+        stripe
+        style="width: 100%">
+        <!-- define table header -->
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column
+          prop="id"
+          label="ID"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="role_name"
+          label="ROLE"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="username"
+          label="USER NAME">
+        </el-table-column>
+        <el-table-column
+          prop="email"
+          label="EMAIL">
+        </el-table-column>
+        <el-table-column
+          prop="mobile"
+          label="MOBILE">
+        </el-table-column>
+        <el-table-column
+          prop="mg_state"
+          label="STATUS">
+          <template v-slot="scope">
+            {{scope.row.mg_state}}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="OPERATION">
+        </el-table-column>
+      </el-table>
     </el-card>
   </div>
 </template>
@@ -33,8 +74,10 @@ export default {
       queryInfo: {
         query: '',
         pagenum: 1,
-        pagesize: 3
-      }
+        pagesize: 2
+      },
+      userList: [],
+      total: 0
     }
   },
   created () {
@@ -43,8 +86,10 @@ export default {
   methods: {
     async getUserList () {
       const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-      if (res.meta.msg.status !== 200) return this.$message.error('Failed to fetch user list.')
+      if (res.meta.status !== 200) return this.$message.error('Failed to fetch user list.')
       console.log(res)
+      this.userList = res.data.users
+      this.total = res.data.total
     }
   }
 }
