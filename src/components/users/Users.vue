@@ -12,8 +12,14 @@
       <!-- search&add area -->
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入内容">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input
+          placeholder="Please input user name"
+          v-model="queryInfo.query"
+          @change="getUserList"
+          clearable
+          >
+            <el-button slot="append" icon="el-icon-search"
+            @click="getUserList"></el-button>
           </el-input>
         </el-col>
         <el-col :span="3">
@@ -99,6 +105,7 @@ export default {
     return {
       // get user data params
       queryInfo: {
+        // searching keyword
         query: '',
         // current page number
         pagenum: 1,
@@ -116,7 +123,7 @@ export default {
   methods: {
     async getUserList () {
       const { data: res } = await this.$http.get('users', { params: this.queryInfo })
-      if (res.meta.status !== 200) return this.$message.error('Failed to fetch user list.')
+      if (res.meta.status !== 200) return this.$message.error('Failed to reload user list.')
       console.log(res)
       this.userList = res.data.users
       this.total = res.data.total
@@ -137,7 +144,7 @@ export default {
       console.log(itmeID)
     },
     async handleSwitch (userInfo) {
-      console.log(userInfo)
+      // console.log(userInfo)
       const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
       if (res.meta.status !== 200) {
         userInfo.mg_state = !userInfo.mg_state
@@ -146,7 +153,8 @@ export default {
       }
       this.$message({
         message: 'user status updated.',
-        type: 'success'
+        type: 'success',
+        duration: 1500
       })
     }
   }
