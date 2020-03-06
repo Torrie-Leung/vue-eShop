@@ -50,15 +50,32 @@
           prop="mobile"
           label="MOBILE">
         </el-table-column>
+        <!-- if assign both slot template and prop to a compo, slot will take place of prop -->
         <el-table-column
-          prop="mg_state"
           label="STATUS">
-          <template v-slot="scope">
-            {{scope.row.mg_state}}
+          <!-- Whenever there are multiple slots, use the full <template> based syntax for all slots -->
+          <template v-slot="slotProp">
+            <!-- {{slotProp.row.mg_state}} -->
+            <el-switch v-model="slotProp.row.mg_state"></el-switch>
           </template>
         </el-table-column>
         <el-table-column
           label="OPERATION">
+          <template v-slot="slotProp">
+            {{slotProp.row.id}}
+            <!-- edit butn -->
+            <el-tooltip content="Edit" placement="top" :enterable="false" :hide-after=1500>
+              <el-button type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+            </el-tooltip>
+            <!-- allocate role btn -->
+            <el-tooltip content="Allocate role" placement="top" :enterable="false" :hide-after=1500>
+              <el-button type="success" icon="el-icon-setting" circle size="mini"></el-button>
+            </el-tooltip>
+            <!-- delete btn -->
+            <el-tooltip content="Delete" placement="top" :enterable="false" :hide-after=1500>
+              <el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+            </el-tooltip>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>

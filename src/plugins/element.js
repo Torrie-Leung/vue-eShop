@@ -20,7 +20,8 @@ import {
   Col,
   Table,
   TableColumn,
-  Switch
+  Switch,
+  Tooltip
 } from 'element-ui'
 
 // global register $message
@@ -47,4 +48,5 @@ export default Vue => {
   Vue.component(Table.name, Table)
   Vue.component(TableColumn.name, TableColumn)
   Vue.component(Switch.name, Switch)
+  Vue.component(Tooltip.name, Tooltip)
 }
