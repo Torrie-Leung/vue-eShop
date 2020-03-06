@@ -23,7 +23,7 @@
           </el-input>
         </el-col>
         <el-col :span="3">
-          <el-button type="primary">Add User</el-button>
+          <el-button type="primary" @click="addUsr">Add User</el-button>
         </el-col>
       </el-row>
       <!-- table section -->
@@ -95,6 +95,20 @@
         :total="total">
       </el-pagination>
     </el-card>
+    <!-- add user dialog -->
+    <el-dialog
+      title="Confirmation"
+      :visible.sync="dialogVisible"
+      width="30%"
+      close-on-click-modal
+      >
+      <!-- notification content -->
+      <span>You're gonna add a new user.</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -114,7 +128,9 @@ export default {
       },
       userList: [],
       // total data item
-      total: 0
+      total: 0,
+      // handle dialog's visibility
+      dialogVisible: false
     }
   },
   created () {
@@ -127,6 +143,13 @@ export default {
       console.log(res)
       this.userList = res.data.users
       this.total = res.data.total
+    },
+    // add new user
+    addUsr () {
+      this.dialogVisible = true
+    },
+    handleClose () {
+      console.log('close dialog')
     },
     // listen to show data size change
     handleSizeChange (newPageSize) {
