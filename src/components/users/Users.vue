@@ -131,8 +131,27 @@
 export default {
   name: 'Users',
   data () {
+    // validate email
+    // get user data params
+    const emailCheck = (rule, value, callback) => {
+      // reg to validate email address
+      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+      if (regEmail.test(value)) {
+        return callback
+      } else {
+        callback(new Error('please input valid email address'))
+      }
+    }
+    const mobielCheck = (rule, value, callback) => {
+      // reg to validate phone number
+      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+      if (regMobile.test(value)) {
+        return callback
+      } else {
+        callback(new Error('please input valid phone number'))
+      }
+    }
     return {
-      // get user data params
       queryInfo: {
         // searching keyword
         query: '',
@@ -161,13 +180,15 @@ export default {
         ],
         password: [
           { required: true, message: 'please input password', trigger: 'blur' },
-          { min: 6, max: 30, message: 'password should be at least 6 digits.', trigger: 'blur' }
+          { min: 6, max: 30, message: 'password should 6 to 30 digits.', trigger: 'blur' }
         ],
         email: [
-          { required: true, message: 'please input email', trigger: 'blur' }
+          { required: true, message: 'please input email', trigger: 'blur' },
+          { validator: emailCheck, trigger: 'blur' }
         ],
         mobile: [
-          { required: true, message: 'please input your phone number', trigger: 'blur' }
+          { required: true, message: 'please input your phone number', trigger: 'blur' },
+          { validator: mobielCheck, trigger: 'blur' }
         ]
       }
     }
