@@ -56,7 +56,7 @@
           <!-- Whenever there are multiple slots, use the full <template> based syntax for all slots -->
           <template v-slot="slotProp">
             <!-- {{slotProp.row.mg_state}} -->
-            <el-switch v-model="slotProp.row.mg_state"></el-switch>
+            <el-switch v-model="slotProp.row.mg_state" @change="handleSwitch(slotProp.row)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column
@@ -69,7 +69,7 @@
             </el-tooltip>
             <!-- allocate role btn -->
             <el-tooltip content="Allocate role" placement="top" :enterable="false" :hide-after=1500>
-              <el-button type="success" icon="el-icon-setting" circle size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" circle size="mini"></el-button>
             </el-tooltip>
             <!-- delete btn -->
             <el-tooltip content="Delete" placement="top" :enterable="false" :hide-after=1500>
@@ -135,6 +135,19 @@ export default {
     },
     editItem (itmeID) {
       console.log(itmeID)
+    },
+    async handleSwitch (userInfo) {
+      console.log(userInfo)
+      const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
+      if (res.meta.status !== 200) {
+        userInfo.mg_state = !userInfo.mg_state
+        console.log(res)
+        return this.$message.error('Failed to update user status.')
+      }
+      this.$message({
+        message: 'user status updated.',
+        type: 'success'
+      })
     }
   }
 }
