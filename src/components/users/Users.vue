@@ -62,10 +62,10 @@
         <el-table-column
           label="OPERATION">
           <template v-slot="slotProp">
-            {{slotProp.row.id}}
+            <!-- {{slotProp.row.id}} -->
             <!-- edit butn -->
             <el-tooltip content="Edit" placement="top" :enterable="false" :hide-after=1500>
-              <el-button type="primary" icon="el-icon-edit" circle size="mini"></el-button>
+              <el-button type="primary" icon="el-icon-edit" circle size="mini" @click="editItem(slotProp.row.id)"></el-button>
             </el-tooltip>
             <!-- allocate role btn -->
             <el-tooltip content="Allocate role" placement="top" :enterable="false" :hide-after=1500>
@@ -78,6 +78,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- pagination section -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[3, 5, 10, 30, 50]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -90,10 +100,13 @@ export default {
       // get user data params
       queryInfo: {
         query: '',
+        // current page number
         pagenum: 1,
-        pagesize: 2
+        // items displayed every page
+        pagesize: 3
       },
       userList: [],
+      // total data item
       total: 0
     }
   },
@@ -107,6 +120,21 @@ export default {
       console.log(res)
       this.userList = res.data.users
       this.total = res.data.total
+    },
+    // listen to show data size change
+    handleSizeChange (newPageSize) {
+      // console.log(newPageSize)
+      this.queryInfo.pagesize = newPageSize
+      this.getUserList()
+    },
+    // listen to current page change
+    handleCurrentChange (curPage) {
+      // console.log(curPage)
+      this.queryInfo.pagenum = curPage
+      this.getUserList()
+    },
+    editItem (itmeID) {
+      console.log(itmeID)
     }
   }
 }

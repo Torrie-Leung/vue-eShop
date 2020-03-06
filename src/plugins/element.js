@@ -21,7 +21,8 @@ import {
   Table,
   TableColumn,
   Switch,
-  Tooltip
+  Tooltip,
+  Pagination
 } from 'element-ui'
 
 // global register $message
@@ -49,4 +50,5 @@ export default Vue => {
   Vue.component(TableColumn.name, TableColumn)
   Vue.component(Switch.name, Switch)
   Vue.component(Tooltip.name, Tooltip)
+  Vue.component(Pagination.name, Pagination)
 }
