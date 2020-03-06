@@ -99,13 +99,16 @@ export default {
 
 <style lang="less"  scoped>
 .login_container{
-  background-color: #35495e;
+  // background-color: #35495e;
+  background-image: url('../assets/mario1.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   height: 100%;
 }
 .login_box{
   width: 450px;
   height: 300px;
-  background-color:#fff;
+  background-color:rgba(0,0,0,0.2);
   border-radius: 3px;
   position: absolute;
   left: 50%;
