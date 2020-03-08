@@ -125,6 +125,18 @@
         <el-button type="primary" @click="confirmNewUser">Confirm</el-button>
       </span>
     </el-dialog>
+    <!-- edit user dialog -->
+    <el-dialog
+      title="edit user"
+      :visible.sync="editDialogVisible"
+      width="50%"
+      >
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="editDialogVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -192,7 +204,9 @@ export default {
           { required: true, message: 'please input your phone number', trigger: 'blur' },
           { validator: mobielCheck, trigger: 'blur' }
         ]
-      }
+      },
+      // handle editing dialog's visibility
+      editDialogVisible: false
     }
   },
   created () {
@@ -227,6 +241,7 @@ export default {
     },
     editItem (itmeID) {
       console.log(itmeID)
+      this.editDialogVisible = true
     },
     async handleSwitch (userInfo) {
       // console.log(userInfo)

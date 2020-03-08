@@ -17,8 +17,8 @@
         </el-form-item>
         <!-- button area -->
         <el-form-item class="btns">
-          <el-button type="primary" @click="login">Log in</el-button>
           <el-button type="info" @click="resetLoginForm">Reset</el-button>
+          <el-button type="primary" @click="login">Log in</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -72,7 +72,7 @@ export default {
     },
     login () {
       this.$refs.loginFormRef.validate(async valid => {
-        // console.log(valid)
+        // console.log(valid, obj)
         if (!valid) return false
         // use axios post login info and return a promise
         // await only used in async function, the function as a callback should be defined as async
