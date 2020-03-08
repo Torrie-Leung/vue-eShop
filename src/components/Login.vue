@@ -116,6 +116,7 @@ export default {
   /* 而translate可以在不知道宽高的情况下进行居中，tranlate（）函数中的百分比是相对于自身宽高的百分比，所以能进行居中。 */
   /* translate(-50%,-50%) 作用是，往上（x轴）,左（y轴）移动自身长宽的 50%，以使其居于中心位置。 */
   transform: translate(-50%,-50%);
+  box-shadow: 0px 0px 5px rgba(0,0,0,0.7);
   .avatar_box {
     height: 130px;
     width: 130px;

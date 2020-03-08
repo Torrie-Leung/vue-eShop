@@ -149,8 +149,10 @@ export default {
       height: 50px;
       width: 50px;
       border-radius: 50%;
-      background: url('../assets/forest.png') center no-repeat;
-      background-size: 126%;
+      // background: url('../assets/forest.png') center no-repeat;
+      background: url('../assets/frog.jpeg') center no-repeat;
+      // background-size: 126%;
+      background-size: 100%;
     }
     span{
       margin-left: 1px;
