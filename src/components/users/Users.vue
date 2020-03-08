@@ -131,7 +131,17 @@
       :visible.sync="editDialogVisible"
       width="50%"
       >
-      <span>这是一段信息</span>
+      <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRuleForm" label-width="100px">
+        <el-form-item label="Username">
+          <el-input v-model="editUserForm.username" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="Email" prop= "email">
+          <el-input v-model="editUserForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="Mobile" prop= "mobile">
+          <el-input v-model="editUserForm.mobile"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="editDialogVisible = false">Confirm</el-button>
@@ -206,7 +216,20 @@ export default {
         ]
       },
       // handle editing dialog's visibility
-      editDialogVisible: false
+      editDialogVisible: false,
+      // query user info
+      editUserForm: {},
+      // edit form validation rules
+      editUserFormRules: {
+        email: [
+          { required: true, message: 'please input email', trigger: 'blur' },
+          { validator: emailCheck, trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: 'please input your phone number', trigger: 'blur' },
+          { validator: mobielCheck, trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {
@@ -239,8 +262,14 @@ export default {
       this.queryInfo.pagenum = curPage
       this.getUserList()
     },
-    editItem (itmeID) {
+    async editItem (itmeID) {
       console.log(itmeID)
+      const { data: res } = await this.$http.get('users/' + itmeID)
+      if (res.meta.status !== 200) {
+        return this.$message.error('failed to check user info.')
+      } else {
+        this.editUserForm = res.data
+      }
       this.editDialogVisible = true
     },
     async handleSwitch (userInfo) {
