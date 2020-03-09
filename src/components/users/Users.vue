@@ -23,7 +23,7 @@
           </el-input>
         </el-col>
         <el-col :span="3">
-          <el-button type="primary" @click="addUsr">Add User</el-button>
+          <el-button type="primary" @click="dialogVisible = true">Add User</el-button>
         </el-col>
       </el-row>
       <!-- table section -->
@@ -145,7 +145,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="editDialogVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="editUserInfo">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -244,10 +244,6 @@ export default {
       this.userList = res.data.users
       this.total = res.data.total
     },
-    // add new user
-    addUsr () {
-      this.dialogVisible = true
-    },
     handleClose () {
       console.log('close dialog')
     },
@@ -264,7 +260,7 @@ export default {
       this.getUserList()
     },
     async editItem (itmeID) {
-      console.log(itmeID)
+      // console.log(itmeID)
       const { data: res } = await this.$http.get('users/' + itmeID)
       if (res.meta.status !== 200) {
         return this.$message.error('failed to check user info.')
@@ -278,7 +274,7 @@ export default {
       const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
       if (res.meta.status !== 200) {
         userInfo.mg_state = !userInfo.mg_state
-        console.log(res)
+        // console.log(res)
         return this.$message.error('Failed to update user status.')
       }
       this.$message({
@@ -314,6 +310,28 @@ export default {
     // handle edit user form closing event
     editDialogClosed () {
       this.$refs.editUserFormRuleForm.resetFields()
+    },
+    // confirm edited user info
+    editUserInfo () {
+      this.$refs.editUserFormRuleForm.validate(async valid => {
+        if (!valid) {
+          this.$message.error('failed to update user info, please check it again.')
+          return false
+        } else {
+          const { data: res } = await this.$http.put('users/' + this.editUserForm.id, {
+            email: this.editUserForm.email,
+            mobile: this.editUserForm.mobile
+          })
+          console.log(res)
+          if (res.meta.status !== 200) {
+            this.$message.erro('Failed to update.')
+          } else {
+            this.editDialogVisible = false
+            this.getUserList()
+            this.$message.success('user info updated.')
+          }
+        }
+      })
     }
   }
 }
