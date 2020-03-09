@@ -79,7 +79,7 @@
             </el-tooltip>
             <!-- delete btn -->
             <el-tooltip content="Delete" placement="top" :enterable="false" :hide-after=1500>
-              <el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+              <el-button type="danger" icon="el-icon-delete" circle size="mini" @click="deleteUser(slotProp.row.id)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -332,6 +332,30 @@ export default {
           }
         }
       })
+    },
+    deleteUser (id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const { data: res } = await this.$http.delete('users/' + id)
+        if (res.meta.status !== 200) {
+          return false
+        } else {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.getUserList()
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+      console.log(id)
     }
   }
 }

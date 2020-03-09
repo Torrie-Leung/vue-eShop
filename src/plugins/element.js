@@ -23,11 +23,13 @@ import {
   Switch,
   Tooltip,
   Pagination,
-  Dialog
+  Dialog,
+  MessageBox
 } from 'element-ui'
 
 // global register $message
 Vue.prototype.$message = Message
+Vue.prototype.$confirm = MessageBox.confirm
 
 export default Vue => {
   Vue.component(Button.name, Button)
