@@ -130,6 +130,7 @@
       title="edit user"
       :visible.sync="editDialogVisible"
       width="50%"
+      @close="editDialogClosed"
       >
       <el-form :model="editUserForm" :rules="editUserFormRules" ref="editUserFormRuleForm" label-width="100px">
         <el-form-item label="Username">
@@ -309,6 +310,10 @@ export default {
           }
         }
       })
+    },
+    // handle edit user form closing event
+    editDialogClosed () {
+      this.$refs.editUserFormRuleForm.resetFields()
     }
   }
 }
