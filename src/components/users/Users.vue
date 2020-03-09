@@ -320,7 +320,8 @@ export default {
         } else {
           const { data: res } = await this.$http.put('users/' + this.editUserForm.id, {
             email: this.editUserForm.email,
-            mobile: this.editUserForm.mobile
+            mobile: this.editUserForm.mobile,
+            role: this.editUserForm.role
           })
           console.log(res)
           if (res.meta.status !== 200) {
@@ -333,29 +334,50 @@ export default {
         }
       })
     },
-    deleteUser (id) {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+    async deleteUser (id) {
+      // const confirmResult = await this.$confirm('You\'re gonna delete this user, are u sure?', 'Comfirmation', {
+      //   confirmButtonText: 'Comfirm',
+      //   cancelButtonText: 'Cancel',
+      //   type: 'warning'
+      // }).catch(err => err)
+      // console.log(confirmResult)
+      // // if confirm clicked, return string 'confirm'
+      // // if delete cancelled, return string 'cancel'
+      // if (confirmResult === 'cancel') {
+      //   return this.$message.info('cancel delete user')
+      // } else if (confirmResult === 'confirm') {
+      //   const { data: res } = await this.$http.delete('users/' + id)
+      //   console.log(res)
+      //   if (res.meta.status === 200) {
+      //     this.getUserList()
+      //     return this.$message.warning('user deleted.')
+      //   } else {
+      //     return this.$message.info('Failed to  delete user.')
+      //   }
+      // }
+
+      // my approach
+      this.$confirm('You\'re gonna delete this user, are u sure?', 'Comfirmation', {
+        confirmButtonText: 'Comfirm',
+        cancelButtonText: 'Cancel',
         type: 'warning'
-      }).then(async() => {
+      }).then(async result => {
+        // console.log(result)
         const { data: res } = await this.$http.delete('users/' + id)
-        if (res.meta.status !== 200) {
-          return false
-        } else {
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
+        if (res.meta.status === 200) {
           this.getUserList()
+          this.$message({
+            type: 'danger',
+            message: 'user deleted.'
+          })
         }
-      }).catch(() => {
+      }).catch((result) => {
+        console.log(result)
         this.$message({
           type: 'info',
-          message: '已取消删除'
+          message: 'Failed to  delete user.'
         })
       })
-      console.log(id)
     }
   }
 }
