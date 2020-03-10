@@ -18,7 +18,34 @@
       <!-- role list -->
       <el-table :data="rolesList" border stripe>
         <!-- expanded area -->
-        <el-table-column type="expand"></el-table-column>
+        <el-table-column type="expand">
+          <template v-slot="slot">
+            <el-row
+              v-for="(item1,i1) in slot.row.children"
+              :class="['bdb',i1 === 0?'bdt':'']"
+              :key="item1.id">
+              <!-- 1st access -->
+              <el-col :span="5">
+                <el-tag>{{item1.authName}}</el-tag>
+                <i class="el-icon-caret-right"></i>
+              </el-col>
+              <!-- 2nd & 3rd access -->
+              <el-col :span="19">
+                <el-row
+                  v-for="(item2,i2) in item1.children"
+                  :class="[i2 === 0?'':'bdt']"
+                  :key="item2.id">
+                  <el-col>
+                    <el-tag type="success">{{item2.authName}}</el-tag>
+                    <i class="el-icon-caret-right"></i>
+                  </el-col>
+                  <el-col></el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+            <pre>{{slot.row}}</pre>
+          </template>
+        </el-table-column>
         <!-- index area -->
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="RoleName" prop="roleName"></el-table-column>
@@ -166,5 +193,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.el-tag{
+  margin: 7px;
+}
+.bdt{
+  border-top: 1px solid #eee;
+}
+.bdb{
+  border-bottom: 1px solid #eee;
+}
+.bdn{
+  border: none;
+}
 </style>
