@@ -285,7 +285,7 @@ export default {
     },
     // listen to newUserForm closing event
     newUserFormClosed () {
-      // this.$refs.newUserFormRef.resetFields()
+      this.$refs.newUserFormRef.resetFields()
     },
     // click btn to add new user
     confirmNewUser () {

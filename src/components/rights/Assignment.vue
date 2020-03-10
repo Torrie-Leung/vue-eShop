@@ -12,11 +12,49 @@
       <!-- add role btn -->
       <el-row>
         <el-col>
-          <el-button type="primary" round>Add Role</el-button>
+          <el-button type="primary" @click="dialogVisible = true">Add Role</el-button>
         </el-col>
       </el-row>
       <!-- role list -->
+      <el-table :data="rolesList" border stripe>
+        <!-- expanded area -->
+        <el-table-column type="expand"></el-table-column>
+        <!-- index area -->
+        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column label="RoleName" prop="roleName"></el-table-column>
+        <el-table-column label="Role Desc" prop="roleDesc"></el-table-column>
+        <el-table-column label="Operation" width="300px">
+          <template v-slot="slotProp">
+            <el-button type="primary" icon="el-icon-edit" size="mini" @click="editItem(slotProp.row.id)">Edit</el-button>
+            <el-button type="warning" icon="el-icon-setting" size="mini" @click="settingItem(slotProp.row.id)">Setting</el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(slotProp.row.id)">Delete</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-card>
+    <!-- add role dialog -->
+    <el-dialog
+      title="Confirmation"
+      :visible.sync="dialogVisible"
+      width="40%"
+      close-on-click-modal
+      @close="newRoleFormClosed"
+    >
+      <!-- notification content -->
+      <span>You're gonna add a new role.</span>
+      <el-form :model="newRole" ref="newRoleRef">
+        <el-form-item label="Role Name" prop="roleName">
+          <el-input v-model="newRole.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="Role Description" prop="roleDesc">
+          <el-input v-model="newRole.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="confirmNewRole">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -25,7 +63,37 @@ export default {
   name: 'Assignment',
   data() {
     return {
-      roleLest: {}
+      rolesList: [],
+      newRole: {
+        roleName: '',
+        roleDesc: ''
+      },
+      dialogVisible: false
+    }
+  },
+  created () {
+    this.getRolesList()
+  },
+  methods: {
+    async getRolesList() {
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        this.$message.error('Failed to get role list.')
+      }
+      console.log(res)
+      this.rolesList = res.data
+    },
+    async confirmNewRole() {
+      const { data: res } = await this.$http.post('roles', this.newRole)
+      if (res.meta.status !== 201) {
+        return this.$message.error('Failed to add new role.')
+      }
+      this.$message.success('new role added.')
+      this.dialogVisible = false
+      this.getRolesList()
+    },
+    newRoleFormClosed() {
+      this.$refs.newRoleRef.resetFields()
     }
   }
 }
