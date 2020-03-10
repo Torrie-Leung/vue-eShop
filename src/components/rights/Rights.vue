@@ -13,14 +13,15 @@
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="Access Item" prop="authName"></el-table-column>
         <el-table-column label="Path" prop="path"></el-table-column>
+        <!-- multiple checks need to add column-key -->
         <el-table-column label="Access Level"
         prop="level"
         sortable
         column-key="level"
-        :filters="[{ text: 'Level-1', value: '0' }, { text: 'Level-2', value: '1' }, { text: 'Level-3', value: '3' }]"
+        :filters="[{ text: 'Level-1', value: '0' }, { text: 'Level-2', value: '1' }, { text: 'Level-3', value: '2' }]"
         :filter-method="filterTag"
         >
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-tag v-if="scope.row.level === '0'">Level-1</el-tag>
             <el-tag type="success" v-else-if="scope.row.level === '1'">Level-2</el-tag>
             <el-tag type="warning" v-else-if="scope.row.level === '2'">Level-3</el-tag>
