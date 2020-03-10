@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import Home from '../components/Home'
 import Welcome from '../components/Welcome'
 import Users from '../components/users/Users'
+import Rights from '../components/rights/Rights'
 
 Vue.use(VueRouter)
 
@@ -18,7 +19,8 @@ const routes = [
     // nested router
     children: [
       { path: '/welcome', component: Welcome },
-      { path: '/users', component: Users }
+      { path: '/users', component: Users },
+      { path: '/rights', component: Rights }
     ]
   }
 ]

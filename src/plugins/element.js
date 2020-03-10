@@ -24,7 +24,8 @@ import {
   Tooltip,
   Pagination,
   Dialog,
-  MessageBox
+  MessageBox,
+  Tag
 } from 'element-ui'
 
 // global register $message
@@ -55,4 +56,5 @@ export default Vue => {
   Vue.component(Tooltip.name, Tooltip)
   Vue.component(Pagination.name, Pagination)
   Vue.component(Dialog.name, Dialog)
+  Vue.component(Tag.name, Tag)
 }
