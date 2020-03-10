@@ -55,6 +55,26 @@
         <el-button type="primary" @click="confirmNewRole">Confirm</el-button>
       </span>
     </el-dialog>
+    <!-- edit role dialog -->
+    <el-dialog
+      title="Edit Role"
+      :visible.sync="editDialogVisible"
+      width="40%"
+      close-on-click-modal
+    >
+      <el-form :model="editRole" ref="editRoleRef">
+        <el-form-item label="Role Name" prop="roleName">
+          <el-input v-model="editRole.roleName"></el-input>
+        </el-form-item>
+        <el-form-item label="Role Desc" prop="roleDesc">
+          <el-input v-model="editRole.roleDesc"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="editNewRole">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -68,7 +88,9 @@ export default {
         roleName: '',
         roleDesc: ''
       },
-      dialogVisible: false
+      editRole: {},
+      dialogVisible: false,
+      editDialogVisible: false
     }
   },
   created () {
@@ -94,7 +116,31 @@ export default {
     },
     newRoleFormClosed() {
       this.$refs.newRoleRef.resetFields()
+    },
+    async editItem (id) {
+      const { data: res } = await this.$http.get('roles/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('failed to load role info.')
+      }
+      this.editRole = res.data
+      this.editDialogVisible = true
+    },
+    async editNewRole () {
+      const { data: res } = await this.$http.put('roles/' + this.editRole.roleId, {
+        roleName: this.editRole.roleName,
+        roleDesc: this.editRole.roleDesc
+      })
+      console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error('Failed to edit role')
+      }
+      this.$message.success('Role edited.')
+      this.getRolesList()
+      this.editDialogVisible = false
     }
+    // editRoleFormClosed() {
+    //   this.$refs.editRoleRef.resetFields()
+    // }
   }
 }
 </script>
