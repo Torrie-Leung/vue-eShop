@@ -137,10 +137,30 @@ export default {
       this.$message.success('Role edited.')
       this.getRolesList()
       this.editDialogVisible = false
+    },
+    async deleteItem(id) {
+      this.$confirm('You\'re gonna delete this role, are u sure?', 'Comfirmation', {
+        confirmButtonText: 'Comfirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async result => {
+        // console.log(result)
+        const { data: res } = await this.$http.delete('roles/' + id)
+        if (res.meta.status === 200) {
+          this.getRolesList()
+          this.$message({
+            type: 'danger',
+            message: 'role deleted.'
+          })
+        }
+      }).catch((result) => {
+        console.log(result)
+        this.$message({
+          type: 'info',
+          message: 'Failed to  delete role.'
+        })
+      })
     }
-    // editRoleFormClosed() {
-    //   this.$refs.editRoleRef.resetFields()
-    // }
   }
 }
 </script>
