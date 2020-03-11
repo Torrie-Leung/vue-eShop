@@ -153,25 +153,28 @@
       title="Allocate rights"
       :visible.sync="allocateRightsDialog"
       width="50%"
+      @close="reallocateDialogClosed"
       >
       <div>
         <p>current user: {{userInfo.username}}</p>
         <p>current role: {{userInfo.role_name}}</p>
         <p>reallocate role:
-        <el-select width="30%"
+        <el-select
+        width="30%"
         v-model="selectedRoleId"
         placeholder="please select role"
+        clearable
         >
           <el-option
           v-for="item in rolesList" :key="item.id"
           :label="item.roleName"
-          :value="item.roleName"></el-option>
+          :value="item.id"></el-option>
         </el-select>
         </p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="allocateRightsDialog = true">Cancel</el-button>
-        <el-button type="primary" >Confirm</el-button>
+        <el-button type="primary" @click="reallocateRole()">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -412,14 +415,34 @@ export default {
     },
     async setRole (userInfo) {
       const { data: res } = await this.$http.get('roles')
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('Failed to load role list')
       }
       this.rolesList = res.data
-      console.log(this.rolesList)
+      // console.log(this.rolesList)
       this.userInfo = userInfo
       this.allocateRightsDialog = true
+    },
+    async reallocateRole () {
+      console.log(this.selectedRoleId)
+      if (!this.selectedRoleId) {
+        return this.$message.error('please select a role for reallocation.')
+      }
+      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, {
+        rid: this.selectedRoleId
+      })
+      console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error(res.meta.msg)
+      }
+      this.$message.success('user role reallocated.')
+      this.getUserList()
+      this.allocateRightsDialog = false
+    },
+    reallocateDialogClosed () {
+      this.selectedRoleId = ''
+      this.userInfo = {}
     }
   }
 }
