@@ -22,7 +22,7 @@
           <template v-slot="slot">
             <el-row
               v-for="(item1,i1) in slot.row.children"
-              :class="['bdb',i1 === 0?'bdt':'']"
+              :class="['bdb',i1 === 0?'bdt':'','vCenter']"
               :key="item1.id">
               <!-- 1st access -->
               <el-col :span="5">
@@ -33,7 +33,7 @@
               <el-col :span="19">
                 <el-row
                   v-for="(item2,i2) in item1.children"
-                  :class="[i2 === 0?'':'bdt']"
+                  :class="['vCenter',i2 === 0?'':'bdt']"
                   :key="item2.id">
                   <el-col :span="6">
                     <el-tag type="success">{{item2.authName}}</el-tag>
@@ -45,6 +45,8 @@
                     :class="[i3 === 0?'':'bdt']"
                     v-for="(item3,i3) in item2.children"
                     :key="item3.id"
+                    closable
+                    @close="rmvRightById(slot.row,item3.id)"
                     >
                     {{item3.authName}}
                     </el-tag>
@@ -190,12 +192,33 @@ export default {
           })
         }
       }).catch((result) => {
-        console.log(result)
+        // console.log(result)
         this.$message({
           type: 'info',
           message: 'Failed to  delete role.'
         })
       })
+    },
+    async rmvRightById (role, rightId) {
+      console.log(role, rightId)
+      const confirmRes = await this.$confirm('You\'re gonna delete this right, are u sure?', 'Comfirmation', {
+        confirmButtonText: 'Comfirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmRes === 'confirm') {
+        const { data: res } = await this.$http.delete(`roles/${role.id}/rights/${rightId}`)
+        console.log(res)
+        if (res.meta.status === 200) {
+          this.$message.info('right deleted.')
+          // reassign right to the role
+          role.children = res.data
+        } else {
+          this.$message.error('failed to delete right.')
+        }
+      } else if (confirmRes === 'cancel') {
+        this.$message.info('Cancel right deletion.')
+      }
     }
   }
 }
@@ -210,5 +233,9 @@ export default {
 }
 .bdb{
   border-bottom: 1px solid #eee;
+}
+.vCenter{
+  display: flex;
+  align-items: center;
 }
 </style>
