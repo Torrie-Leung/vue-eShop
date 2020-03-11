@@ -126,10 +126,11 @@
       :visible.sync="setRightDialogVisible"
       width="40%"
       close-on-click-modal
-      close="setRightDialogClosed"
+      @close="setRightDialogClosed"
     >
     <!-- tree compo -->
       <el-tree
+      ref="treeRef"
       :data="rightsList"
       show-checkbox
       :props="treeProps"
@@ -137,6 +138,10 @@
       default-expand-all
       :default-checked-keys='defKeys'
       ></el-tree>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRightDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="confirmRightsAllocation">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -162,7 +167,9 @@ export default {
         label: 'authName'
       },
       // default checked nodes' id
-      defKeys: []
+      defKeys: [],
+      // to save allocating id
+      roleId: ''
     }
   },
   created () {
@@ -255,19 +262,20 @@ export default {
       }
     },
     async showSettingDialog (role) {
+      this.roleId = role.id
       const { data: res } = await this.$http.get('rights/tree')
       if (res.meta.status !== 200) {
         this.$message.error('Failed to get right list.')
       } else {
         this.rightsList = res.data
-        console.log(this.rightsList)
+        // console.log(this.rightsList)
       }
       this.getLeafKeys(role, this.defKeys)
       this.setRightDialogVisible = true
     },
     // get role's 3rd class access rights' id by recursion and then assign them to defKeys
     getLeafKeys (node, arr) {
-      console.log(node, arr)
+      // console.log(node, arr)
       if (!node.children) {
         return arr.push(node.id)
       }
@@ -277,6 +285,24 @@ export default {
     },
     setRightDialogClosed () {
       this.defKeys = []
+      // console.log('closed', this.defKeys)
+    },
+    async confirmRightsAllocation () {
+      const key = [
+        // ... creates a new literal Array
+        ...this.$refs.treeRef.getCheckedKeys(),
+        ...this.$refs.treeRef.getHalfCheckedKeys()
+      ]
+      // getCheckedKeys returns an Array containing checked child nodes
+      // console.log(key)
+      const rids = key.join(',')
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids })
+      if (res.meta.status !== 200) {
+        return this.$message.error('Failed to allocate rights.')
+      }
+      this.$message.success('Rights allocated.')
+      this.getRolesList()
+      this.setRightDialogVisible = false
     }
   }
 }
