@@ -25,7 +25,8 @@ import {
   Pagination,
   Dialog,
   MessageBox,
-  Tag
+  Tag,
+  Tree
 } from 'element-ui'
 
 // global register $message
@@ -57,4 +58,5 @@ export default Vue => {
   Vue.component(Pagination.name, Pagination)
   Vue.component(Dialog.name, Dialog)
   Vue.component(Tag.name, Tag)
+  Vue.component(Tree.name, Tree)
 }

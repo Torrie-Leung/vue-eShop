@@ -26,7 +26,10 @@
               :key="item1.id">
               <!-- 1st access -->
               <el-col :span="5">
-                <el-tag>{{item1.authName}}</el-tag>
+                <el-tag
+                closable
+                @close="rmvRightById(slot.row,item1.id)"
+                >{{item1.authName}}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <!-- 2nd & 3rd access -->
@@ -36,7 +39,11 @@
                   :class="['vCenter',i2 === 0?'':'bdt']"
                   :key="item2.id">
                   <el-col :span="6">
-                    <el-tag type="success">{{item2.authName}}</el-tag>
+                    <el-tag
+                    type="success"
+                    closable
+                    @close="rmvRightById(slot.row,item2.id)"
+                    >{{item2.authName}}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
                   <el-col :span="18">
@@ -64,7 +71,7 @@
         <el-table-column label="Operation" width="300px">
           <template v-slot="slotProp">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="editItem(slotProp.row.id)">Edit</el-button>
-            <el-button type="warning" icon="el-icon-setting" size="mini" @click="settingItem(slotProp.row.id)">Setting</el-button>
+            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSettingDialog">Setting</el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(slotProp.row.id)">Delete</el-button>
           </template>
         </el-table-column>
@@ -113,6 +120,19 @@
         <el-button type="primary" @click="editNewRole">Confirm</el-button>
       </span>
     </el-dialog>
+    <!-- setting role dialog -->
+    <el-dialog
+      title="Set Role"
+      :visible.sync="setRightDialogVisible"
+      width="40%"
+      close-on-click-modal
+    >
+    <!-- tree compo -->
+      <el-tree
+      :data="rightsList"
+      show-checkbox
+      :props="treeProps"></el-tree>
+    </el-dialog>
   </div>
 </template>
 
@@ -128,7 +148,14 @@ export default {
       },
       editRole: {},
       dialogVisible: false,
-      editDialogVisible: false
+      editDialogVisible: false,
+      setRightDialogVisible: false,
+      rightsList: [],
+      // tree compo attribute data binding
+      treeProps: {
+        children: 'children',
+        label: 'authName'
+      }
     }
   },
   created () {
@@ -140,7 +167,7 @@ export default {
       if (res.meta.status !== 200) {
         this.$message.error('Failed to get role list.')
       }
-      console.log(res)
+      // console.log(res)
       this.rolesList = res.data
     },
     async confirmNewRole() {
@@ -218,6 +245,16 @@ export default {
         }
       } else if (confirmRes === 'cancel') {
         this.$message.info('Cancel right deletion.')
+      }
+    },
+    async showSettingDialog () {
+      this.setRightDialogVisible = true
+      const { data: res } = await this.$http.get('rights/tree')
+      if (res.meta.status !== 200) {
+        this.$message.error('Failed to get right list.')
+      } else {
+        this.rightsList = res.data
+        console.log(this.rightsList)
       }
     }
   }
