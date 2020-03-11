@@ -75,7 +75,7 @@
             </el-tooltip>
             <!-- allocate role btn -->
             <el-tooltip content="Allocate role" placement="top" :enterable="false" :hide-after=1500>
-              <el-button type="warning" icon="el-icon-setting" circle size="mini"></el-button>
+              <el-button type="warning" icon="el-icon-setting" circle size="mini"  @click="setRole(slotProp.row)"></el-button>
             </el-tooltip>
             <!-- delete btn -->
             <el-tooltip content="Delete" placement="top" :enterable="false" :hide-after=1500>
@@ -146,6 +146,32 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="editUserInfo">Confirm</el-button>
+      </span>
+    </el-dialog>
+    <!-- allocate rights dialog -->
+    <el-dialog
+      title="Allocate rights"
+      :visible.sync="allocateRightsDialog"
+      width="50%"
+      >
+      <div>
+        <p>current user: {{userInfo.username}}</p>
+        <p>current role: {{userInfo.role_name}}</p>
+        <p>reallocate role:
+        <el-select width="30%"
+        v-model="selectedRoleId"
+        placeholder="please select role"
+        >
+          <el-option
+          v-for="item in rolesList" :key="item.id"
+          :label="item.roleName"
+          :value="item.roleName"></el-option>
+        </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="allocateRightsDialog = true">Cancel</el-button>
+        <el-button type="primary" >Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -230,7 +256,12 @@ export default {
           { required: true, message: 'please input your phone number', trigger: 'blur' },
           { validator: mobielCheck, trigger: 'blur' }
         ]
-      }
+      },
+      allocateRightsDialog: false,
+      // role needed to be allocated rights
+      userInfo: {},
+      rolesList: [],
+      selectedRoleId: ''
     }
   },
   created () {
@@ -378,6 +409,17 @@ export default {
           message: 'Failed to  delete user.'
         })
       })
+    },
+    async setRole (userInfo) {
+      const { data: res } = await this.$http.get('roles')
+      console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error('Failed to load role list')
+      }
+      this.rolesList = res.data
+      console.log(this.rolesList)
+      this.userInfo = userInfo
+      this.allocateRightsDialog = true
     }
   }
 }

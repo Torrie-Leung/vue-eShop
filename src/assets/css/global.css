@@ -19,3 +19,6 @@ html,body,#app{
   margin-top: 20px;
   text-align: right;
 }
+.el-select{
+  margin-left: 10px;
+}

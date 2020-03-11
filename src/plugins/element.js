@@ -26,7 +26,9 @@ import {
   Dialog,
   MessageBox,
   Tag,
-  Tree
+  Tree,
+  Select,
+  Option
 } from 'element-ui'
 
 // global register $message
@@ -59,4 +61,6 @@ export default Vue => {
   Vue.component(Dialog.name, Dialog)
   Vue.component(Tag.name, Tag)
   Vue.component(Tree.name, Tree)
+  Vue.component(Select.name, Select)
+  Vue.component(Option.name, Option)
 }
