@@ -131,7 +131,11 @@
       <el-tree
       :data="rightsList"
       show-checkbox
-      :props="treeProps"></el-tree>
+      :props="treeProps"
+      node-key="id"
+      default-expand-all
+      :default-checked-keys='defKeys'
+      ></el-tree>
     </el-dialog>
   </div>
 </template>
@@ -155,7 +159,9 @@ export default {
       treeProps: {
         children: 'children',
         label: 'authName'
-      }
+      },
+      // default checked nodes' id
+      defKeys: [105, 116]
     }
   },
   created () {
