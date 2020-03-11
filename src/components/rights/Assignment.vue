@@ -61,7 +61,7 @@
                 </el-row>
               </el-col>
             </el-row>
-            <pre>{{slot.row}}</pre>
+            <!-- <pre>{{slot.row}}</pre> -->
           </template>
         </el-table-column>
         <!-- index area -->
@@ -71,7 +71,7 @@
         <el-table-column label="Operation" width="300px">
           <template v-slot="slotProp">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="editItem(slotProp.row.id)">Edit</el-button>
-            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSettingDialog">Setting</el-button>
+            <el-button type="warning" icon="el-icon-setting" size="mini" @click="showSettingDialog(slotProp.row)">Setting</el-button>
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteItem(slotProp.row.id)">Delete</el-button>
           </template>
         </el-table-column>
@@ -126,6 +126,7 @@
       :visible.sync="setRightDialogVisible"
       width="40%"
       close-on-click-modal
+      close="setRightDialogClosed"
     >
     <!-- tree compo -->
       <el-tree
@@ -161,7 +162,7 @@ export default {
         label: 'authName'
       },
       // default checked nodes' id
-      defKeys: [105, 116]
+      defKeys: []
     }
   },
   created () {
@@ -253,8 +254,7 @@ export default {
         this.$message.info('Cancel right deletion.')
       }
     },
-    async showSettingDialog () {
-      this.setRightDialogVisible = true
+    async showSettingDialog (role) {
       const { data: res } = await this.$http.get('rights/tree')
       if (res.meta.status !== 200) {
         this.$message.error('Failed to get right list.')
@@ -262,6 +262,21 @@ export default {
         this.rightsList = res.data
         console.log(this.rightsList)
       }
+      this.getLeafKeys(role, this.defKeys)
+      this.setRightDialogVisible = true
+    },
+    // get role's 3rd class access rights' id by recursion and then assign them to defKeys
+    getLeafKeys (node, arr) {
+      console.log(node, arr)
+      if (!node.children) {
+        return arr.push(node.id)
+      }
+      node.children.forEach(item => {
+        this.getLeafKeys(item, arr)
+      })
+    },
+    setRightDialogClosed () {
+      this.defKeys = []
     }
   }
 }
