@@ -5,6 +5,8 @@ import router from './router'
 import './assets/css/global.css'
 // import font
 import './assets/fonts/iconfont.css'
+// import G2 from '@antv/g2'
+// import { View } from '@antv/data-set'
 // import element-ui
 import elemUI from './plugins/element.js'
 // import axios
@@ -22,6 +24,9 @@ Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 Vue.use(elemUI)
+// Vue.use(G2)
+// Vue.use(View)
+
 new Vue({
   router,
   render: h => h(App)
