@@ -8,8 +8,8 @@
       <el-breadcrumb-item>Chart</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-      <div id="c1" ref="chart1"></div>
-      <div id="c2" style="width:500px;height:300px;"></div>
+      <!-- <div id="c1" ref="chart1"></div> -->
+      <div id="c2" style="width:100%;height:300px;"></div>
     </el-card>
   </div>
 </template>
@@ -55,6 +55,7 @@ export default {
         ]
       },
       chart1: {
+        c2: null,
         container: 'chart1',
         chartData: [
           { genre: 'Sports', sold: 275 },
@@ -66,21 +67,36 @@ export default {
       }
     }
   },
+  computed: {
+    isCollapse() {
+      return this.$store.state.isCollapse
+    }
+  },
+  watch: {
+    isCollapse(newValue, oldValue) {
+      this.resizeHandler()
+    }
+  },
   async mounted () {
     // g2 example
     // this.barChart()
-    const eChart = echart.init(document.getElementById('c2'))
+    const that = this
+    that.c2 = echart.init(document.getElementById('c2'))
     // const resizeDiv = document.getElementById('c2')
     const { data: res } = await this.$http.get('reports/type/1')
     if (res.meta.status !== 200) return this.$message.error('Failed to load chart data.')
     const resultD = _.merge(res.data, this.options)
-    eChart.setOption(resultD)
+    that.c2.setOption(resultD)
     // const listener = function () {
     //   eChart.resize()
     // }
     // elResize(resizeDiv, listener)
+    window.addEventListener('resize', that.resizeHandler)
   },
   methods: {
+    resizeHandler() {
+      this.c2.resize()
+    },
     // g2 example
     barChart () {
       // Step 1: 创建 Chart 对象
@@ -97,6 +113,10 @@ export default {
       // Step 4: 渲染图表
       chart.render()
     }
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.resizeHandler)
+    this.c2.dispose()
   }
 }
 </script>

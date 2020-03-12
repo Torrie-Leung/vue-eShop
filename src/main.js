@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import { store } from './store/store'
 // import global css
 import './assets/css/global.css'
 // import font
@@ -29,5 +30,6 @@ Vue.use(elemUI)
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

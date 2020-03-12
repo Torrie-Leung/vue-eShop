@@ -115,7 +115,10 @@ export default {
     },
     // toggle menu
     toggleMenu () {
+      // console.log(this.$store.state.isCollapse)
       this.isCollapse = !this.isCollapse
+      this.$store.commit('toggleCollapse')
+      // console.log(this.$store.state.isCollapse)
     },
     // tracing clicking & save nav active status to sessionStorage
     traceNavState (activePath) {
