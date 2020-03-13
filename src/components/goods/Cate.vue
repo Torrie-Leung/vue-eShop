@@ -45,9 +45,18 @@
           <el-tag v-else-if="scope.row.cat_level === 1" type="warning">2nd</el-tag>
           <el-tag v-else-if="scope.row.cat_level === 2" type="success">3rd</el-tag>
         </template>
+
+        <!-- template of validation -->
+        <template v-slot:operation>
+          <el-button type="primary" icon="el-icon-edit" size="mini">Edit</el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="deleteCateDialog = true" size="mini">Delete</el-button>
+        </template>
       </tree-table>
       <!-- pagination -->
       <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
         layout="prev, pager, next"
         :total="totalPages"
         :page-size="queryInfo.pagesize">
@@ -88,8 +97,14 @@ export default {
           type: 'template',
           // define template name
           template: 'order'
+        },
+        {
+          label: 'OPERATION',
+          type: 'template',
+          template: 'operation'
         }
-      ]
+      ],
+      deleteCateDialog: false
     }
   },
   created () {
@@ -101,14 +116,24 @@ export default {
       if (res.meta.status !== 200) {
         this.$message.error('Failed to get category list.')
       }
-      console.log(res.data)
       this.cateList = res.data.result
       this.totalPages = res.data.total
+    },
+    handleSizeChange (newPageSize) {
+      this.queryInfo.pagesize = newPageSize
+      this.getCateList()
+    },
+    handleCurrentChange (newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getCateList()
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-
+.zk-table__cell-inner i{
+  font-size: 1.5rem;
+  vertical-align: middle !important;
+}
 </style>
