@@ -16,8 +16,13 @@
         </el-col>
       </el-row>
       <!-- table -->
-      <el-table></el-table>
+      <tree-table :data="cateList" :columns="columns" :selection-type=false></tree-table>
       <!-- pagination -->
+      <el-pagination
+        layout="prev, pager, next"
+        :total="totalPages"
+        :page-size="queryInfo.pagesize">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -27,7 +32,21 @@ export default {
   name: 'Cate',
   data() {
     return {
-      cateList: []
+      cateList: [],
+      // query condition
+      queryInfo: {
+        type: 3,
+        pagenum: 1,
+        pagesize: 5
+      },
+      totalPages: 0,
+      // define table columns
+      columns: [
+        {
+          label: 'CATE_NAME',
+          prop: 'cat_name'
+        }
+      ]
     }
   },
   created () {
@@ -35,12 +54,13 @@ export default {
   },
   methods: {
     async getCateList() {
-      const { data: res } = await this.$http.get('categories', {
-        type: 3,
-        pagenum: 1,
-        pagesize: 5
-      })
-      console.log(res)
+      const { data: res } = await this.$http.get('categories', { params: this.queryInfo })
+      if (res.meta.status !== 200) {
+        this.$message.error('Failed to get category list.')
+      }
+      console.log(res.data)
+      this.cateList = res.data.result
+      this.totalPages = res.data.total
     }
   }
 }

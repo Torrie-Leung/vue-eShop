@@ -10,6 +10,8 @@ import './assets/fonts/iconfont.css'
 // import { View } from '@antv/data-set'
 // import element-ui
 import elemUI from './plugins/element.js'
+// import vue-table-tree-grid
+import TreeTable from 'vue-table-with-tree-grid'
 // import axios
 import axios from 'axios'
 // request root path
@@ -27,7 +29,7 @@ Vue.config.productionTip = false
 Vue.use(elemUI)
 // Vue.use(G2)
 // Vue.use(View)
-
+Vue.component('tree-table', TreeTable)
 new Vue({
   router,
   store,
