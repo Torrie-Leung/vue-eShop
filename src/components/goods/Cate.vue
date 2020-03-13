@@ -16,7 +16,28 @@
         </el-col>
       </el-row>
       <!-- table -->
-      <tree-table :data="cateList" :columns="columns" :selection-type=false></tree-table>
+      <tree-table
+      :data="cateList"
+      :columns="columns"
+      :selection-type="false"
+      :expand-type="false"
+      :show-index="true"
+      index-text="#"
+      border
+      >
+        <!-- discarded by vue 3.0 -->
+        <!-- <template slot="isOK" slot-scope="scope">
+          <i
+          :class="[!scope.row.cat_deleted ? 'el-icon-success': 'el-icon-error']"
+          :style="{ color: !scope.row.cat_deleted ? 'lightgreen': 'red'}"></i>
+        </template> -->
+        <!--supported by vue 3.0  -->
+        <template v-slot:isOK= "scope">
+          <i
+          :class="[!scope.row.cat_deleted ? 'el-icon-success': 'el-icon-error']"
+          :style="{ color: !scope.row.cat_deleted ? 'lightgreen': 'red'}"></i>
+        </template>
+      </tree-table>
       <!-- pagination -->
       <el-pagination
         layout="prev, pager, next"
@@ -45,6 +66,12 @@ export default {
         {
           label: 'CATE_NAME',
           prop: 'cat_name'
+        },
+        {
+          label: 'VALIDATION',
+          // prop: 'cat_deleted',
+          type: 'template',
+          template: 'isOK'
         }
       ]
     }
