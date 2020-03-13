@@ -25,6 +25,7 @@
       index-text="#"
       border
       >
+        <!-- template of validation -->
         <!-- discarded by vue 3.0 -->
         <!-- <template slot="isOK" slot-scope="scope">
           <i
@@ -36,6 +37,13 @@
           <i
           :class="[!scope.row.cat_deleted ? 'el-icon-success': 'el-icon-error']"
           :style="{ color: !scope.row.cat_deleted ? 'lightgreen': 'red'}"></i>
+        </template>
+
+        <!-- template of validation -->
+        <template v-slot:order= "scope">
+          <el-tag v-if="scope.row.cat_level === 0" >1st</el-tag>
+          <el-tag v-else-if="scope.row.cat_level === 1" type="warning">2nd</el-tag>
+          <el-tag v-else-if="scope.row.cat_level === 2" type="success">3rd</el-tag>
         </template>
       </tree-table>
       <!-- pagination -->
@@ -69,9 +77,17 @@ export default {
         },
         {
           label: 'VALIDATION',
-          // prop: 'cat_deleted',
+          // define template type
           type: 'template',
+          // define template name
           template: 'isOK'
+        },
+        {
+          label: 'ORDER',
+          // define template type
+          type: 'template',
+          // define template name
+          template: 'order'
         }
       ]
     }
