@@ -274,7 +274,7 @@ export default {
     async getUserList () {
       const { data: res } = await this.$http.get('users', { params: this.queryInfo })
       if (res.meta.status !== 200) return this.$message.error('Failed to reload user list.')
-      console.log(res)
+      // console.log(res)
       this.userList = res.data.users
       this.total = res.data.total
     },
