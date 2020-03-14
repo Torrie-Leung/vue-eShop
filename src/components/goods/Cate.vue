@@ -12,7 +12,7 @@
       <!-- button -->
       <el-row>
         <el-col>
-          <el-button type="primary">Add Category</el-button>
+          <el-button type="primary" @click="addCateDialogVisible = true">Add Category</el-button>
         </el-col>
       </el-row>
       <!-- table -->
@@ -57,11 +57,31 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        layout="prev, pager, next"
+        layout="total,prev, pager, next,jumper"
         :total="totalPages"
         :page-size="queryInfo.pagesize">
       </el-pagination>
     </el-card>
+    <!-- add category dialog -->
+    <el-dialog
+      title="Confirmation"
+      :visible.sync="addCateDialogVisible"
+      width="40%"
+      close-on-click-modal
+    >
+      <!-- notification content -->
+      <span>You're gonna add a new category.</span>
+      <el-form :model="newCate" ref="newCateRef" :rules="newCateRules">
+        <el-form-item label="Cate Name" prop="cat_name">
+          <el-input v-model="newCate.cat_name"></el-input>
+        </el-form-item>
+        <el-form-item label="Cate Class"></el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addCateDialogVisible = false">Cancel</el-button>
+        <el-button type="primary">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -104,7 +124,20 @@ export default {
           template: 'operation'
         }
       ],
-      deleteCateDialog: false
+      deleteCateDialog: false,
+      addCateDialogVisible: false,
+      newCate: {
+        cat_name: '',
+        // default root cate
+        cat_pid: 0,
+        // default cate class
+        cat_level: 0
+      },
+      newCateRules: {
+        cat_name: [
+          { required: true, message: 'please input category name', trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {

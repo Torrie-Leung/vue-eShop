@@ -2,6 +2,7 @@ import Vue from 'vue'
 import {
   Button,
   Input,
+  InputNumber,
   Form,
   FormItem,
   Message,
@@ -40,6 +41,7 @@ export default Vue => {
   Vue.component(Form.name, Form)
   Vue.component(FormItem.name, FormItem)
   Vue.component(Input.name, Input)
+  Vue.component(InputNumber.name, InputNumber)
   Vue.component(Container.name, Container)
   Vue.component(Header.name, Header)
   Vue.component(Aside.name, Aside)
