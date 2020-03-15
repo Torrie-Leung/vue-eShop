@@ -75,7 +75,18 @@
         <el-form-item label="Cate Name" prop="cat_name">
           <el-input v-model="newCate.cat_name"></el-input>
         </el-form-item>
-        <el-form-item label="Cate Class"></el-form-item>
+        <el-form-item label="Cate Class">
+          <!-- options define datasource -->
+          <el-cascader
+          size="small"
+          v-model="selectedKeys"
+          :options="parentCateList"
+          :props="cascaderProps"
+          expand-trigger = 'hover'
+          @change="parentCateChanged"
+          clearable
+          popper-class="panel"></el-cascader>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCateDialogVisible = false">Cancel</el-button>
@@ -138,7 +149,13 @@ export default {
           { required: true, message: 'please input category name', trigger: 'blur' }
         ]
       },
-      parentCateList: []
+      parentCateList: [],
+      cascaderProps: {
+        value: 'cat_id',
+        label: 'cat_name',
+        children: 'children'
+      },
+      selectedKeys: []
     }
   },
   created () {
@@ -169,6 +186,9 @@ export default {
       const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
       if (res.meta.status !== 200) return this.$message.error('Failed to reload parent class list.')
       this.parentCateList = res.data
+    },
+    parentCateChanged () {
+      console.log(this.selectedKeys)
     }
   }
 }
@@ -178,5 +198,11 @@ export default {
 .zk-table__cell-inner i{
   font-size: 1.5rem;
   vertical-align: middle !important;
+}
+.panel{
+  position: absolute !important;
+  top: 382px !important;
+  height: 100%;
+  overflow: scroll;
 }
 </style>
