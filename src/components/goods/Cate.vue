@@ -199,10 +199,4 @@ export default {
   font-size: 1.5rem;
   vertical-align: middle !important;
 }
-.panel{
-  position: absolute !important;
-  top: 382px !important;
-  height: 100%;
-  overflow: scroll;
-}
 </style>
