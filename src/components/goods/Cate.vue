@@ -12,7 +12,7 @@
       <!-- button -->
       <el-row>
         <el-col>
-          <el-button type="primary" @click="addCateDialogVisible = true">Add Category</el-button>
+          <el-button type="primary" @click="openCateDialog">Add Category</el-button>
         </el-col>
       </el-row>
       <!-- table -->
@@ -137,7 +137,8 @@ export default {
         cat_name: [
           { required: true, message: 'please input category name', trigger: 'blur' }
         ]
-      }
+      },
+      parentCateList: []
     }
   },
   created () {
@@ -152,6 +153,10 @@ export default {
       this.cateList = res.data.result
       this.totalPages = res.data.total
     },
+    openCateDialog () {
+      this.getParentTreeList()
+      this.addCateDialogVisible = true
+    },
     handleSizeChange (newPageSize) {
       this.queryInfo.pagesize = newPageSize
       this.getCateList()
@@ -159,6 +164,11 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getCateList()
+    },
+    async getParentTreeList () {
+      const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
+      if (res.meta.status !== 200) return this.$message.error('Failed to reload parent class list.')
+      this.parentCateList = res.data
     }
   }
 }
