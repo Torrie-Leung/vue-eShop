@@ -22,9 +22,15 @@
           clearable
           :options="cateList"
           :props="cateProps"
+          v-model="selectedCateKeys"
+          @change="cascaderChange"
           change-on-select
           expand-trigger="hover"></el-cascader>
       </el-row>
+      <el-tabs v-model="activeName" @tab-click="handleTabClick">
+        <el-tab-pane label="Dynamic Params" name="first">Dynamic Params</el-tab-pane>
+        <el-tab-pane label="Configuration" name="second">Configuration</el-tab-pane>
+      </el-tabs>
     </el-card>
   </div>
 </template>
@@ -39,7 +45,9 @@ export default {
         value: 'cat_id',
         label: 'cat_name',
         children: 'children'
-      }
+      },
+      selectedCateKeys: [],
+      activeName: 'first'
     }
   },
   created () {
@@ -60,6 +68,17 @@ export default {
       if (res.meta.status !== 200) return this.$message.error('Failed to get category list.')
       this.cateList = res.data
       console.log(this.cateList)
+    },
+    cascaderChange () {
+      if (this.selectedCateKeys.length !== 3) {
+        this.selectedCateKeys = []
+        this.$message.error('please select a 3rd clss.')
+        return false
+      }
+    },
+    handleTabClick(tab, event) {
+      console.log(tab, event)
+      console.log(this.activeName)
     }
   }
 }
