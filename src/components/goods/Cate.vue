@@ -49,7 +49,7 @@
         <!-- template of validation -->
         <template v-slot:operation="scope">
           <el-button type="primary" icon="el-icon-edit" size="mini" @click="editCate(scope.row.cat_id)">Edit</el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="deleteCateDialog = true" size="mini">Delete</el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="deleteCate(scope.row.cat_id)" size="mini">Delete</el-button>
         </template>
       </tree-table>
       <!-- pagination -->
@@ -155,7 +155,6 @@ export default {
           template: 'operation'
         }
       ],
-      deleteCateDialog: false,
       addCateDialogVisible: false,
       newCate: {
         cat_name: '',
@@ -270,6 +269,27 @@ export default {
         this.$message.success('category info updated.')
         this.getCateList()
         this.editDialogVisible = false
+      })
+    },
+    deleteCate (id) {
+      this.$confirm('You\'re gonna delete this category,are u sure?', 'Confirmation', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(async result => {
+        const { data: res } = await this.$http.delete('categories/' + id)
+        this.getCateList()
+        if (res.meta.status === 200) {
+          this.$message({
+            type: 'danger',
+            message: 'category deleted.'
+          })
+        }
+      }).catch((result) => {
+        this.$message({
+          type: 'info',
+          message: 'Failed to  delete category.'
+        })
       })
     }
   }

@@ -406,7 +406,7 @@ export default {
           })
         }
       }).catch((result) => {
-        console.log(result)
+        // console.log(result)
         this.$message({
           type: 'info',
           message: 'Failed to  delete user.'
