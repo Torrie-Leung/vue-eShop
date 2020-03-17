@@ -82,15 +82,16 @@
           v-model="selectedKeys"
           :options="parentCateList"
           :props="cascaderProps"
-          expand-trigger = 'hover'
           @change="parentCateChanged"
           clearable
-          popper-class="panel"></el-cascader>
+          change-on-select
+          expand-trigger="hover"
+          ></el-cascader>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCateDialogVisible = false">Cancel</el-button>
-        <el-button type="primary">Confirm</el-button>
+        <el-button type="primary" @click="confirmNewCate">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -161,6 +162,15 @@ export default {
   created () {
     this.getCateList()
   },
+  mounted () {
+    setInterval(function() {
+      document.querySelectorAll('.el-cascader-node__label').forEach(el => {
+        el.onclick = function() {
+          if (this.previousElementSibling) this.previousElementSibling.click()
+        }
+      })
+    }, 1000)
+  },
   methods: {
     async getCateList() {
       const { data: res } = await this.$http.get('categories', { params: this.queryInfo })
@@ -183,16 +193,23 @@ export default {
       this.getCateList()
     },
     async getParentTreeList () {
-      const { data: res } = await this.$http.get('categories', { params: { type: 3 } })
+      const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
       if (res.meta.status !== 200) return this.$message.error('Failed to reload parent class list.')
       this.parentCateList = res.data
     },
     parentCateChanged () {
-      console.log(this.selectedKeys.length)
+      console.log(this.selectedKeys)
       if (this.selectedKeys.length > 0) {
         // parent class id
         this.newCate.cat_pid = this.selectedKeys[this.selectedKeys.length - 1]
+        this.newCate.cat_level = this.selectedKeys.length
+      } else {
+        this.newCate.cat_pid = 0
+        this.newCate.cat_level = 0
       }
+    },
+    confirmNewCate () {
+      console.log(this.newCate)
     }
   }
 }
@@ -202,5 +219,15 @@ export default {
 .zk-table__cell-inner i{
   font-size: 1.5rem;
   vertical-align: middle !important;
+}
+.el-cascader{
+  width: 100%;
+}
+.el-radio__inner{
+  border: 0px !important;
+  background-color:inherit;
+}
+.el-radio__input.is-checked .el-radio__inner{
+  background:none;
 }
 </style>
