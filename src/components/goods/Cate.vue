@@ -47,8 +47,8 @@
         </template>
 
         <!-- template of validation -->
-        <template v-slot:operation>
-          <el-button type="primary" icon="el-icon-edit" size="mini">Edit</el-button>
+        <template v-slot:operation="scope">
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="editCate(scope.row.cat_id)">Edit</el-button>
           <el-button type="danger" icon="el-icon-delete" @click="deleteCateDialog = true" size="mini">Delete</el-button>
         </template>
       </tree-table>
@@ -93,6 +93,24 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="addCateDialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="confirmNewCate">Confirm</el-button>
+      </span>
+    </el-dialog>
+    <!-- edit category dialog -->
+    <el-dialog
+      title="Edit Category"
+      :visible.sync="editDialogVisible"
+      width="40%"
+      close-on-click-modal
+      @close="editCateDialogClosed">
+      <span>You're gonna edit this category.</span>
+      <el-form :model="editCateForm" :rules="newCateRules" ref="editCateFormRef">
+        <el-form-item label="Category Name" prop="cat_name">
+          <el-input v-model="editCateForm.cat_name"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editCateDialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="confirmEditCateInfo">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -157,7 +175,14 @@ export default {
         label: 'cat_name',
         children: 'children'
       },
-      selectedKeys: []
+      selectedKeys: [],
+      editDialogVisible: false,
+      editCateForm: {},
+      editCateRules: {
+        cat_name: [
+          { required: true, message: 'please input category name', trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {
@@ -224,6 +249,28 @@ export default {
       this.selectedKeys = []
       this.newCate.cat_pid = 0
       this.newCate.cat_level = 0
+    },
+    async editCate (id) {
+      const { data: res } = await this.$http.get('categories/' + id)
+      if (res.meta.status !== 200) return this.$message.error('Failed to load category info.')
+      this.editCateForm = res.data
+      this.editDialogVisible = true
+      // console.log(this.editCateForm)
+    },
+    editCateDialogClosed () {
+      this.$refs.editCateFormRef.resetFields()
+    },
+    confirmEditCateInfo () {
+      this.$refs.editCateFormRef.validate(async valid => {
+        if (!valid) return false
+        const { data: res } = await this.$http.put('categories/' + this.editCateForm.cat_id, {
+          cat_name: this.editCateForm.cat_name
+        })
+        if (res.meta.status !== 200) return this.$message.error('Failed to update category info.')
+        this.$message.success('category info updated.')
+        this.getCateList()
+        this.editDialogVisible = false
+      })
     }
   }
 }
