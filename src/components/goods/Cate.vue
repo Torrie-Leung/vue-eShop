@@ -237,11 +237,4 @@ export default {
 .el-cascader{
   width: 100%;
 }
-.el-radio__inner{
-  border: 0px !important;
-  background-color:inherit;
-}
-.el-radio__input.is-checked .el-radio__inner{
-  background:none;
-}
 </style>
