@@ -279,6 +279,7 @@ export default {
       }).then(async result => {
         const { data: res } = await this.$http.delete('categories/' + id)
         this.getCateList()
+        console.log(res)
         if (res.meta.status === 200) {
           this.$message({
             type: 'danger',
@@ -287,7 +288,7 @@ export default {
         }
       }).catch((result) => {
         this.$message({
-          type: 'info',
+          type: 'error',
           message: 'Failed to  delete category.'
         })
       })
