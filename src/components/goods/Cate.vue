@@ -68,6 +68,7 @@
       :visible.sync="addCateDialogVisible"
       width="40%"
       close-on-click-modal
+      @close="addCateDialogClosed"
     >
       <!-- notification content -->
       <span>You're gonna add a new category.</span>
@@ -210,6 +211,12 @@ export default {
     },
     confirmNewCate () {
       console.log(this.newCate)
+    },
+    addCateDialogClosed () {
+      this.$refs.newCateRef.resetFields()
+      this.selectedKeys = []
+      this.newCate.cat_pid = 0
+      this.newCate.cat_level = 0
     }
   }
 }
