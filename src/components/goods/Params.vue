@@ -28,8 +28,12 @@
           expand-trigger="hover"></el-cascader>
       </el-row>
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
-        <el-tab-pane label="Dynamic Params" name="first">Dynamic Params</el-tab-pane>
-        <el-tab-pane label="Configuration" name="second">Configuration</el-tab-pane>
+        <el-tab-pane label="Dynamic Params" name="first">
+          <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Dynamic Params</el-button>
+        </el-tab-pane>
+        <el-tab-pane label="Configuration" name="second">
+          <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Configs</el-button>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -79,6 +83,15 @@ export default {
     handleTabClick(tab, event) {
       console.log(tab, event)
       console.log(this.activeName)
+    }
+  },
+  computed: {
+    isBtnDisabled () {
+      if (this.selectedCateKeys.length !== 3) {
+        return true
+      } else {
+        return false
+      }
     }
   }
 }
