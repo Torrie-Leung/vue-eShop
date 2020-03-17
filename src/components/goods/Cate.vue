@@ -210,7 +210,14 @@ export default {
       }
     },
     confirmNewCate () {
-      console.log(this.newCate)
+      this.$refs.newCateRef.validate(async valid => {
+        if (!valid) return false
+        const { data: res } = await this.$http.post('categories', this.newCate)
+        if (res.meta.status !== 201) return this.$message.error('Failed to add new category.')
+        this.$message.success('new category added.')
+        this.getCateList()
+        this.addCateDialogVisible = false
+      })
     },
     addCateDialogClosed () {
       this.$refs.newCateRef.resetFields()
