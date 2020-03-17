@@ -183,12 +183,16 @@ export default {
       this.getCateList()
     },
     async getParentTreeList () {
-      const { data: res } = await this.$http.get('categories', { params: { type: 2 } })
+      const { data: res } = await this.$http.get('categories', { params: { type: 3 } })
       if (res.meta.status !== 200) return this.$message.error('Failed to reload parent class list.')
       this.parentCateList = res.data
     },
     parentCateChanged () {
-      console.log(this.selectedKeys)
+      console.log(this.selectedKeys.length)
+      if (this.selectedKeys.length > 0) {
+        // parent class id
+        this.newCate.cat_pid = this.selectedKeys[this.selectedKeys.length - 1]
+      }
     }
   }
 }

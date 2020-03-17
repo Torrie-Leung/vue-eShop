@@ -26,5 +26,8 @@ html,body,#app{
   position: absolute !important;
   top: 382px !important;
   height: 50% !important;
-  overflow-y: scroll !important;
+  /* overflow: scroll !important;  */
+}
+.el-cascader-panel{
+  height: 100%;
 }

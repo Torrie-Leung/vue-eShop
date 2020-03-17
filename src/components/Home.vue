@@ -46,8 +46,10 @@
                 :key="subItem.id"
                 @click="traceNavState('/' + subItem.path)"
                 >
-                <i class="el-icon-menu"></i>
-                <span>{{subItem.authName}}</span>
+                <template slot="title">
+                  <i class="el-icon-menu"></i>
+                  <span>{{subItem.authName}}</span>
+                </template>
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
