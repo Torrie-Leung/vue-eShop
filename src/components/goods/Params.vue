@@ -51,7 +51,9 @@ export default {
         children: 'children'
       },
       selectedCateKeys: [],
-      activeName: 'many'
+      activeName: 'many',
+      manyTableData: [],
+      onlyTableData:[]
     }
   },
   created () {
@@ -73,7 +75,16 @@ export default {
       this.cateList = res.data
       console.log(this.cateList)
     },
-    async cascaderChange () {
+    cascaderChange () {
+      this.getParamsData()
+    },
+    handleTabClick(tab, event) {
+      console.log(tab, event)
+      console.log(this.activeName)
+      this.getParamsData()
+    },
+    // to get params data from server
+    async getParamsData () {
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
         this.$message.error('please select a 3rd clss.')
@@ -86,10 +97,11 @@ export default {
       })
       if (res.meta.status !== 200) return this.$message.error('Failed to load params data.')
       console.log(res)
-    },
-    handleTabClick(tab, event) {
-      console.log(tab, event)
-      console.log(this.activeName)
+      if (this.activeName === 'many') {
+        this.manyTableData = res.data
+      } else if (this.activeName === 'only') {
+        this.onlyTableData = res.data
+      }
     }
   },
   computed: {
