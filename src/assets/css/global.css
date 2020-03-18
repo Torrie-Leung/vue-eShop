@@ -27,6 +27,20 @@ html,body,#app{
   /* top: 382px !important; */
   height: 50% !important;
 }
+.el-radio__inner{
+  width: 0 !important;
+  height: 0 !important;
+  border: 0px !important;
+  background-color:none !important;
+}
+.el-radio__inner::afte{
+  width: 0 !important;
+  height: 0 !important;
+  background-color: none !important;
+}
+.el-radio__input.is-checked .el-radio__inner{
+  background:none !important;
+}
 .el-cascader-panel{
   height: 100%;
 }

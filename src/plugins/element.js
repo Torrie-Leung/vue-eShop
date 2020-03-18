@@ -30,7 +30,10 @@ import {
   Tree,
   Select,
   Option,
-  Cascader
+  Cascader,
+  Alert,
+  Tabs,
+  TabPane
 } from 'element-ui'
 
 // global register $message
@@ -67,4 +70,7 @@ export default Vue => {
   Vue.component(Select.name, Select)
   Vue.component(Option.name, Option)
   Vue.component(Cascader.name, Cascader)
+  Vue.component(Alert.name, Alert)
+  Vue.component(Tabs.name, Tabs)
+  Vue.component(TabPane.name, TabPane)
 }
