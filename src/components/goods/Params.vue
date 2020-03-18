@@ -28,10 +28,10 @@
           expand-trigger="hover"></el-cascader>
       </el-row>
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
-        <el-tab-pane label="Dynamic Params" name="first">
+        <el-tab-pane label="Dynamic Params" name="many">
           <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Dynamic Params</el-button>
         </el-tab-pane>
-        <el-tab-pane label="Configuration" name="second">
+        <el-tab-pane label="Configuration" name="only">
           <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Configs</el-button>
         </el-tab-pane>
       </el-tabs>
@@ -51,7 +51,7 @@ export default {
         children: 'children'
       },
       selectedCateKeys: [],
-      activeName: 'first'
+      activeName: 'many'
     }
   },
   created () {
@@ -73,12 +73,19 @@ export default {
       this.cateList = res.data
       console.log(this.cateList)
     },
-    cascaderChange () {
+    async cascaderChange () {
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
         this.$message.error('please select a 3rd clss.')
         return false
       }
+      const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+        params: {
+          sel: this.activeName
+        }
+      })
+      if (res.meta.status !== 200) return this.$message.error('Failed to load params data.')
+      console.log(res)
     },
     handleTabClick(tab, event) {
       console.log(tab, event)
