@@ -92,6 +92,13 @@ export default {
       } else {
         return false
       }
+    },
+    cateId () {
+      if (this.selectedCateKeys.length === 3) {
+        return this.selectedCateKeys[2]
+      } else {
+        return null
+      }
     }
   }
 }
