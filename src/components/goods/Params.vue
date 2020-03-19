@@ -37,7 +37,7 @@
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
               <template v-slot="slotProp">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParams(slotProp.row)">Edit</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParamsDialogVisible = true">Edit</el-button>
                 <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
               </template>
             </el-table-column>
@@ -52,7 +52,7 @@
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
               <template v-slot="slotProp">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParams(slotProp.row)">Edit</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParamsDialogVisible = true">Edit</el-button>
                 <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
               </template>
             </el-table-column>
@@ -68,14 +68,14 @@
       >
         <!-- notification content -->
         <span>You're gonna add a new param.</span>
-        <el-form :model="newParam" ref="newParamRef">
+        <el-form :model="addParamForm" :rules="addParamFormRules" ref="addParamFormRef" @close="addParamFormClosed">
           <el-form-item label="Param Name" prop="attr_name">
-            <el-input v-model="newParam.attr_name"></el-input>
+            <el-input v-model="addParamForm.attr_name"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="addParamsDialogVisible = false">Cancel</el-button>
-          <el-button type="primary" >Confirm</el-button>
+          <el-button type="primary" @click="addParamConfirmed">Confirm</el-button>
         </span>
       </el-dialog>
       <!-- edit param dialog -->
@@ -84,17 +84,18 @@
         :visible.sync="editParamsDialogVisible"
         width="40%"
         close-on-click-modal
+        @close="editParamsClosed"
       >
         <!-- notification content -->
         <span>You're gonna add a new role.</span>
-        <el-form :model="newParam" ref="newParamRef">
+        <el-form :model="editParam" :rules="editParamFormRules" ref="editParamRef">
           <el-form-item label="Param Name" prop="attr_name">
-            <el-input v-model="newParam.attr_name"></el-input>
+            <el-input v-model="editParam.attr_name"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="editParamsDialogVisible = false">Cancel</el-button>
-          <el-button type="primary" >Confirm</el-button>
+          <el-button type="primary" @click="editParamsConfirmed">Confirm</el-button>
         </span>
       </el-dialog>
     </el-card>
@@ -118,7 +119,20 @@ export default {
       onlyTableData: [],
       addParamsDialogVisible: false,
       editParamsDialogVisible: false,
-      newParam: {
+      addParamFormRules: {
+        attr_name: [
+          { required: true, message: 'please input param name', trigger: 'blur' }
+        ]
+      },
+      addParamForm: {
+        attr_name: ''
+      },
+      editParamFormRules: {
+        attr_name: [
+          { required: true, message: 'please input param name', trigger: 'blur' }
+        ]
+      },
+      editParam: {
         attr_name: ''
       }
     }
@@ -170,8 +184,30 @@ export default {
         this.onlyTableData = res.data
       }
     },
-    editParams (paramInfo) {
-      console.log(paramInfo)
+    addParamFormClosed () {
+      this.$refs.addParamFormRef.resetFields()
+    },
+    addParamConfirmed () {
+      this.$refs.addParamFormRef.validate(async valid => {
+        if (!valid) return false
+        const { data: res } = await this.$http.post(`categories/${this.cateId}/attributes`, {
+          attr_name: this.addParamForm.attr_name,
+          attr_sel: this.activeName
+        })
+        if (res.meta.status !== 201) this.$message.error('Failed to add new param.')
+        this.$message.success('new param added.')
+        console.log(res)
+        this.addParamsDialogVisible = false
+        this.getCateList()
+      })
+    },
+    editParamsConfirmed () {
+      this.$refs.editParamRef.validate(async valid => {
+        if (!valid) return false
+      })
+    },
+    editParamsClosed () {
+      this.$refs.editParamRef.resetFields()
     },
     deletParams (paramInfo) {
       console.log(paramInfo)
