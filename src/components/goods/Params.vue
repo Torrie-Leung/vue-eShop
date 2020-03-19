@@ -30,9 +30,31 @@
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <el-tab-pane label="Dynamic Params" name="many">
           <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Dynamic Params</el-button>
+          <!-- dynamic params table -->
+          <el-table :data="manyTableData" border>
+            <el-table-column type="index" label="#"></el-table-column>
+            <el-table-column label="param name" prop="attr_name"></el-table-column>
+            <el-table-column label="operation" >
+              <template v-slot="slotProp">
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParams(slotProp.row)">Edit</el-button>
+                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
         <el-tab-pane label="Configuration" name="only">
           <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Configs</el-button>
+          <!-- only params table -->
+          <el-table :data="onlyTableData" border stripe>
+            <el-table-column type="index" label="#"></el-table-column>
+            <el-table-column label="param name" prop="attr_name"></el-table-column>
+            <el-table-column label="operation" >
+              <template v-slot="slotProp">
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParams(slotProp.row)">Edit</el-button>
+                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -53,7 +75,7 @@ export default {
       selectedCateKeys: [],
       activeName: 'many',
       manyTableData: [],
-      onlyTableData:[]
+      onlyTableData: []
     }
   },
   created () {
@@ -102,6 +124,12 @@ export default {
       } else if (this.activeName === 'only') {
         this.onlyTableData = res.data
       }
+    },
+    editParams (paramInfo) {
+      console.log(paramInfo)
+    },
+    deletParams (paramInfo) {
+      console.log(paramInfo)
     }
   },
   computed: {
