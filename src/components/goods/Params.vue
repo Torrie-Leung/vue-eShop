@@ -29,9 +29,10 @@
       </el-row>
       <el-tabs v-model="activeName" @tab-click="handleTabClick">
         <el-tab-pane label="Dynamic Params" name="many">
-          <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Dynamic Params</el-button>
+          <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled" @click="addParamsDialogVisible = true">Dynamic Params</el-button>
           <!-- dynamic params table -->
           <el-table :data="manyTableData" border>
+            <el-table-column type="expand"></el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
@@ -43,9 +44,10 @@
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="Configuration" name="only">
-          <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled">Configs</el-button>
+          <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled" @click="addParamsDialogVisible = true">Configs</el-button>
           <!-- only params table -->
           <el-table :data="onlyTableData" border stripe>
+            <el-table-column type="expand"></el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
@@ -57,6 +59,44 @@
           </el-table>
         </el-tab-pane>
       </el-tabs>
+      <!-- add param dialog -->
+      <el-dialog
+        :title="addParamTitle"
+        :visible.sync="addParamsDialogVisible"
+        width="40%"
+        close-on-click-modal
+      >
+        <!-- notification content -->
+        <span>You're gonna add a new param.</span>
+        <el-form :model="newParam" ref="newParamRef">
+          <el-form-item label="Param Name" prop="attr_name">
+            <el-input v-model="newParam.attr_name"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="addParamsDialogVisible = false">Cancel</el-button>
+          <el-button type="primary" >Confirm</el-button>
+        </span>
+      </el-dialog>
+      <!-- edit param dialog -->
+      <el-dialog
+        title="Confirmation"
+        :visible.sync="editParamsDialogVisible"
+        width="40%"
+        close-on-click-modal
+      >
+        <!-- notification content -->
+        <span>You're gonna add a new role.</span>
+        <el-form :model="newParam" ref="newParamRef">
+          <el-form-item label="Param Name" prop="attr_name">
+            <el-input v-model="newParam.attr_name"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="editParamsDialogVisible = false">Cancel</el-button>
+          <el-button type="primary" >Confirm</el-button>
+        </span>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -75,7 +115,12 @@ export default {
       selectedCateKeys: [],
       activeName: 'many',
       manyTableData: [],
-      onlyTableData: []
+      onlyTableData: [],
+      addParamsDialogVisible: false,
+      editParamsDialogVisible: false,
+      newParam: {
+        attr_name: ''
+      }
     }
   },
   created () {
@@ -146,6 +191,9 @@ export default {
       } else {
         return null
       }
+    },
+    addParamTitle () {
+      return this.activeName === 'many' ? 'Add Dynamic Params' : 'Add Constant Params'
     }
   }
 }
