@@ -37,7 +37,7 @@
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
               <template v-slot="slotProp">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParamsDialogVisible = true">Edit</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="openEditParamDiaolog(slotProp.row.attr_id)">Edit</el-button>
                 <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
               </template>
             </el-table-column>
@@ -52,7 +52,7 @@
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
               <template v-slot="slotProp">
-                <el-button type="primary" icon="el-icon-edit" size="mini" @click="editParamsDialogVisible = true">Edit</el-button>
+                <el-button type="primary" icon="el-icon-edit" size="mini" @click="openEditParamDiaolog(slotProp.row.attr_id)">Edit</el-button>
                 <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
               </template>
             </el-table-column>
@@ -154,14 +154,14 @@ export default {
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) return this.$message.error('Failed to get category list.')
       this.cateList = res.data
-      console.log(this.cateList)
+      // console.log(this.cateList)
     },
     cascaderChange () {
       this.getParamsData()
     },
     handleTabClick(tab, event) {
       console.log(tab, event)
-      console.log(this.activeName)
+      // console.log(this.activeName)
       this.getParamsData()
     },
     // to get params data from server
@@ -177,7 +177,7 @@ export default {
         }
       })
       if (res.meta.status !== 200) return this.$message.error('Failed to load params data.')
-      console.log(res)
+      // console.log(res)
       if (this.activeName === 'many') {
         this.manyTableData = res.data
       } else if (this.activeName === 'only') {
@@ -200,6 +200,18 @@ export default {
         this.addParamsDialogVisible = false
         this.getCateList()
       })
+    },
+    async openEditParamDiaolog (attrId) {
+      console.log(attrId)
+      this.editParamsDialogVisible = true
+      const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes/${attrId}`, {
+        params: {
+          attr_sel: this.activeName
+        }
+      })
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error('failed to load param info.')
+      this.editParam = res.data
     },
     editParamsConfirmed () {
       this.$refs.editParamRef.validate(async valid => {
