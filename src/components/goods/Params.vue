@@ -87,7 +87,7 @@
         @close="editParamsClosed"
       >
         <!-- notification content -->
-        <span>You're gonna add a new role.</span>
+        <span>You're gonna update param name.</span>
         <el-form :model="editParam" :rules="editParamFormRules" ref="editParamRef">
           <el-form-item label="Param Name" prop="attr_name">
             <el-input v-model="editParam.attr_name"></el-input>
@@ -216,6 +216,14 @@ export default {
     editParamsConfirmed () {
       this.$refs.editParamRef.validate(async valid => {
         if (!valid) return false
+        const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${this.editParam.attr_id}`, {
+          attr_name: this.editParam.attr_name,
+          attr_sel: this.activeName
+        })
+        if (res.meta.status !== 200) return this.$message.error('Failed to update param name.')
+        this.getParamsData()
+        this.$message.success('param name updated.')
+        this.editParamsDialogVisible = false
       })
     },
     editParamsClosed () {
