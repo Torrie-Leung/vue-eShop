@@ -34,7 +34,10 @@
           <el-table :data="manyTableData" border>
             <el-table-column type="expand">
               <template v-slot="slotData">
-                <span>{{slotData.row.attr_vals}}</span>
+                <el-tag
+                v-for="(val, i) in slotData.row.attr_vals"
+                :key="i"
+                closable>{{val}}</el-tag>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
