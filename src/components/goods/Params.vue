@@ -32,7 +32,11 @@
           <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled" @click="addParamsDialogVisible = true">Dynamic Params</el-button>
           <!-- dynamic params table -->
           <el-table :data="manyTableData" border>
-            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="expand">
+              <template v-slot="slotData">
+                <span>{{slotData.row.attr_vals}}</span>
+              </template>
+            </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
@@ -179,6 +183,10 @@ export default {
       })
       if (res.meta.status !== 200) return this.$message.error('Failed to load params data.')
       // console.log(res)
+      res.data.forEach(item => {
+        item.attr_vals = item.attr_vals.split(' ')
+      })
+      console.log(res)
       if (this.activeName === 'many') {
         this.manyTableData = res.data
       } else if (this.activeName === 'only') {
