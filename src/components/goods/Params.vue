@@ -38,7 +38,7 @@
             <el-table-column label="operation" >
               <template v-slot="slotProp">
                 <el-button type="primary" icon="el-icon-edit" size="mini" @click="openEditParamDiaolog(slotProp.row.attr_id)">Edit</el-button>
-                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
+                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row.attr_id)">Delete</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -53,7 +53,7 @@
             <el-table-column label="operation" >
               <template v-slot="slotProp">
                 <el-button type="primary" icon="el-icon-edit" size="mini" @click="openEditParamDiaolog(slotProp.row.attr_id)">Edit</el-button>
-                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row)">Delete</el-button>
+                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row.attr_id)">Delete</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -65,10 +65,11 @@
         :visible.sync="addParamsDialogVisible"
         width="40%"
         close-on-click-modal
+        @closed="addParamFormClosed"
       >
         <!-- notification content -->
         <span>You're gonna add a new param.</span>
-        <el-form :model="addParamForm" :rules="addParamFormRules" ref="addParamFormRef" @close="addParamFormClosed">
+        <el-form :model="addParamForm" :rules="addParamFormRules" ref="addParamFormRef" >
           <el-form-item label="Param Name" prop="attr_name">
             <el-input v-model="addParamForm.attr_name"></el-input>
           </el-form-item>
@@ -160,7 +161,7 @@ export default {
       this.getParamsData()
     },
     handleTabClick(tab, event) {
-      console.log(tab, event)
+      // console.log(tab, event)
       // console.log(this.activeName)
       this.getParamsData()
     },
@@ -195,10 +196,10 @@ export default {
           attr_sel: this.activeName
         })
         if (res.meta.status !== 201) this.$message.error('Failed to add new param.')
-        this.$message.success('new param added.')
-        console.log(res)
-        this.addParamsDialogVisible = false
         this.getCateList()
+        this.$message.success('new param added.')
+        // console.log(res)
+        this.addParamsDialogVisible = false
       })
     },
     async openEditParamDiaolog (attrId) {
@@ -209,7 +210,7 @@ export default {
           attr_sel: this.activeName
         }
       })
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) return this.$message.error('failed to load param info.')
       this.editParam = res.data
     },
@@ -229,8 +230,21 @@ export default {
     editParamsClosed () {
       this.$refs.editParamRef.resetFields()
     },
-    deletParams (paramInfo) {
-      console.log(paramInfo)
+    async deleteParams (paramId) {
+      console.log(paramId)
+      const confirmRes = await this.$confirm('You\'re gonna delete this param,are u shure?', 'Confirmation', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmRes !== 'confirm') {
+        this.$message.info('cancel deletion.')
+      } else {
+        const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${paramId}`)
+        if (res.meta.status !== 200) return this.$message.error('Failed to delete param.')
+        this.$message.warning('param deleted')
+        this.getCateList()
+      }
     }
   },
   computed: {
