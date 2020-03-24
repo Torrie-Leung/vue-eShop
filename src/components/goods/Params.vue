@@ -45,8 +45,8 @@
                   v-model="slotData.row.inputTagValue"
                   ref="saveTagInput"
                   size="small"
-                  @keyup.enter.native="handleInputConfirm"
-                  @blur="handleInputConfirm"
+                  @keyup.enter.native="handleInputConfirm(slotData.row)"
+                  @blur="handleInputConfirm(slotData.row)"
                 >
                 </el-input>
                 <!-- tag btn -->
@@ -80,8 +80,8 @@
                   v-model="slotData.row.inputTagValue"
                   ref="saveTagInput"
                   size="small"
-                  @keyup.enter.native="handleInputConfirm"
-                  @blur="handleInputConfirm"
+                  @keyup.enter.native="handleInputConfirm(slotData.row)"
+                  @blur="handleInputConfirm(slotData.row)"
                 >
                 </el-input>
                 <!-- tag btn -->
@@ -303,8 +303,16 @@ export default {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
-    handleInputConfirm () {
-      console.log('ok')
+    handleInputConfirm (rowInfo) {
+      if (rowInfo.inputTagValue.trim().length === 0) {
+        rowInfo.inputTagValue = ''
+        rowInfo.inputTagVisible = false
+        return false
+      }
+      console.log(rowInfo.inputTagValue)
+      rowInfo.attr_vals.push(rowInfo.inputTagValue.trim())
+      rowInfo.inputTagValue = ''
+      rowInfo.inputTagVisible = false
     }
   },
   computed: {
