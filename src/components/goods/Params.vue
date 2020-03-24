@@ -295,8 +295,13 @@ export default {
       }
     },
     showTagInput (rowInfo) {
-      console.log(rowInfo)
+      // console.log(rowInfo)
       rowInfo.inputTagVisible = true
+      // $nextTick: call callback function after elements being rendered again
+      this.$nextTick(_ => {
+        // auto focused
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
     },
     handleInputConfirm () {
       console.log('ok')
