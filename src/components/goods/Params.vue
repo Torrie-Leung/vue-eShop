@@ -37,7 +37,8 @@
                 <el-tag
                 v-for="(val, i) in slotData.row.attr_vals"
                 :key="i"
-                closable>{{val}}</el-tag>
+                closable
+                @close="handleDeleteTag(i,slotData.row)">{{val}}</el-tag>
                 <!-- tag inupt -->
                 <el-input
                   class="input-new-tag"
@@ -72,7 +73,8 @@
                 <el-tag
                 v-for="(val, i) in slotData.row.attr_vals"
                 :key="i"
-                closable>{{val}}</el-tag>
+                closable
+                @close="handleDeleteTag(i,slotData.row)">{{val}}</el-tag>
                 <!-- tag inupt -->
                 <el-input
                   class="input-new-tag"
@@ -218,7 +220,7 @@ export default {
         }
       })
       if (res.meta.status !== 200) return this.$message.error('Failed to load params data.')
-      // console.log(res)
+      console.log(res)
       res.data.forEach(item => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
         // add unique boolean to handle input's visible
@@ -309,10 +311,11 @@ export default {
         rowInfo.inputTagVisible = false
         return false
       }
-      console.log(rowInfo)
+      // console.log(rowInfo)
       rowInfo.attr_vals.push(rowInfo.inputTagValue.trim())
       rowInfo.inputTagValue = ''
       rowInfo.inputTagVisible = false
+      console.log(typeof rowInfo.attr_vals.join(' '))
       const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${rowInfo.attr_id}`, {
         attr_name: rowInfo.attr_name,
         attr_sel: rowInfo.attr_sel,
@@ -320,7 +323,11 @@ export default {
       })
       console.log(res)
       if (res.meta.status !== 200) return this.$message.error('failed to update param.')
+      // this.getParamsData()
       this.$message.success('param updated.')
+    },
+    handleDeleteTag (i, row) {
+      row.attr_vals.splice(i, 1)
     }
   },
   computed: {
