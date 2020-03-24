@@ -211,6 +211,8 @@ export default {
     async getParamsData () {
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
+        this.manyTableData = []
+        this.onlyTableData = []
         this.$message.error('please select a 3rd clss.')
         return false
       }
