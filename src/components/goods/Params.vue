@@ -38,6 +38,17 @@
                 v-for="(val, i) in slotData.row.attr_vals"
                 :key="i"
                 closable>{{val}}</el-tag>
+                <el-input
+                  class="input-new-tag"
+                  v-if="inputTagVisible"
+                  v-model="inputTagValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm"
+                  @blur="handleInputConfirm"
+                >
+                </el-input>
+                <el-button v-else class="button-new-tag" size="small" >+ New Tag</el-button>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
@@ -54,7 +65,25 @@
           <el-button type="primary" icon="el-icon-plus" :disabled="isBtnDisabled" @click="addParamsDialogVisible = true">Configs</el-button>
           <!-- only params table -->
           <el-table :data="onlyTableData" border stripe>
-            <el-table-column type="expand"></el-table-column>
+            <el-table-column type="expand">
+              <template v-slot="slotData">
+                <el-tag
+                v-for="(val, i) in slotData.row.attr_vals"
+                :key="i"
+                closable>{{val}}</el-tag>
+                <el-input
+                  class="input-new-tag"
+                  v-if="inputTagVisible"
+                  v-model="inputTagValue"
+                  ref="saveTagInput"
+                  size="small"
+                  @keyup.enter.native="handleInputConfirm"
+                  @blur="handleInputConfirm"
+                >
+                </el-input>
+                <el-button v-else class="button-new-tag" size="small" >+ New Tag</el-button>
+              </template>
+            </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
             <el-table-column label="param name" prop="attr_name"></el-table-column>
             <el-table-column label="operation" >
@@ -142,7 +171,9 @@ export default {
       },
       editParam: {
         attr_name: ''
-      }
+      },
+      inputTagVisible: false,
+      inputTagValue: ''
     }
   },
   created () {
@@ -187,9 +218,9 @@ export default {
       if (res.meta.status !== 200) return this.$message.error('Failed to load params data.')
       // console.log(res)
       res.data.forEach(item => {
-        item.attr_vals = item.attr_vals.split(' ')
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
       })
-      console.log(res)
+      // console.log(res)
       if (this.activeName === 'many') {
         this.manyTableData = res.data
       } else if (this.activeName === 'only') {
@@ -207,7 +238,7 @@ export default {
           attr_sel: this.activeName
         })
         if (res.meta.status !== 201) this.$message.error('Failed to add new param.')
-        this.getCateList()
+        this.getParamsData()
         this.$message.success('new param added.')
         // console.log(res)
         this.addParamsDialogVisible = false
@@ -254,9 +285,10 @@ export default {
         const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${paramId}`)
         if (res.meta.status !== 200) return this.$message.error('Failed to delete param.')
         this.$message.warning('param deleted')
-        this.getCateList()
+        this.getParamsData()
       }
-    }
+    },
+    handleInputConfirm () {}
   },
   computed: {
     isBtnDisabled () {
@@ -283,5 +315,8 @@ export default {
 <style lang="less" scoped>
 .cates_option{
   margin: 15px;
+}
+.el-tag{
+  margin: 0 10px;
 }
 </style>
