@@ -303,16 +303,24 @@ export default {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
-    handleInputConfirm (rowInfo) {
+    async handleInputConfirm (rowInfo) {
       if (rowInfo.inputTagValue.trim().length === 0) {
         rowInfo.inputTagValue = ''
         rowInfo.inputTagVisible = false
         return false
       }
-      console.log(rowInfo.inputTagValue)
+      console.log(rowInfo)
       rowInfo.attr_vals.push(rowInfo.inputTagValue.trim())
       rowInfo.inputTagValue = ''
       rowInfo.inputTagVisible = false
+      const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${rowInfo.attr_id}`, {
+        attr_name: rowInfo.attr_name,
+        attr_sel: rowInfo.attr_sel,
+        attr_vlas: rowInfo.attr_vals.join(' ')
+      })
+      console.log(res)
+      if (res.meta.status !== 200) return this.$message.error('failed to update param.')
+      this.$message.success('param updated.')
     }
   },
   computed: {
