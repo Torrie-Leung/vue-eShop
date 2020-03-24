@@ -38,17 +38,19 @@
                 v-for="(val, i) in slotData.row.attr_vals"
                 :key="i"
                 closable>{{val}}</el-tag>
+                <!-- tag inupt -->
                 <el-input
                   class="input-new-tag"
-                  v-if="inputTagVisible"
-                  v-model="inputTagValue"
+                  v-if="slotData.row.inputTagVisible"
+                  v-model="slotData.row.inputTagValue"
                   ref="saveTagInput"
                   size="small"
                   @keyup.enter.native="handleInputConfirm"
                   @blur="handleInputConfirm"
                 >
                 </el-input>
-                <el-button v-else class="button-new-tag" size="small" >+ New Tag</el-button>
+                <!-- tag btn -->
+                <el-button v-else class="button-new-tag" size="small" @click="showTagInput(slotData.row)">+ New Tag</el-button>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
@@ -71,17 +73,19 @@
                 v-for="(val, i) in slotData.row.attr_vals"
                 :key="i"
                 closable>{{val}}</el-tag>
+                <!-- tag inupt -->
                 <el-input
                   class="input-new-tag"
-                  v-if="inputTagVisible"
-                  v-model="inputTagValue"
+                  v-if="slotData.row.inputTagVisible"
+                  v-model="slotData.row.inputTagValue"
                   ref="saveTagInput"
                   size="small"
                   @keyup.enter.native="handleInputConfirm"
                   @blur="handleInputConfirm"
                 >
                 </el-input>
-                <el-button v-else class="button-new-tag" size="small" >+ New Tag</el-button>
+                <!-- tag btn -->
+                <el-button v-else class="button-new-tag" size="small" @click="showTagInput(slotData.row)">+ New Tag</el-button>
               </template>
             </el-table-column>
             <el-table-column type="index" label="#"></el-table-column>
@@ -171,9 +175,7 @@ export default {
       },
       editParam: {
         attr_name: ''
-      },
-      inputTagVisible: false,
-      inputTagValue: ''
+      }
     }
   },
   created () {
@@ -219,6 +221,10 @@ export default {
       // console.log(res)
       res.data.forEach(item => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+        // add unique boolean to handle input's visible
+        item.inputTagVisible = false
+        // item's unique input value
+        item.inputTagValue = ''
       })
       // console.log(res)
       if (this.activeName === 'many') {
@@ -288,7 +294,18 @@ export default {
         this.getParamsData()
       }
     },
-    handleInputConfirm () {}
+    showTagInput (rowInfo) {
+      // console.log(rowInfo)
+      rowInfo.inputTagVisible = true
+      // $nextTick: call callback function after elements being rendered again
+      this.$nextTick(_ => {
+        // auto focused
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    handleInputConfirm () {
+      console.log('ok')
+    }
   },
   computed: {
     isBtnDisabled () {
@@ -318,5 +335,10 @@ export default {
 }
 .el-tag{
   margin: 0 10px;
+}
+.input-new-tag{
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
 }
 </style>
