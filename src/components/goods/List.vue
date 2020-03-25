@@ -11,9 +11,8 @@
     <el-card>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input
-          placeholder="please input good's name">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="please input good's name" v-model="queryInfo.query" clearable>
+            <el-button slot="append" icon="el-icon-search" @click="getGoodsList()"></el-button>
           </el-input>
         </el-col>
         <el-col :span="4">
@@ -32,7 +31,7 @@
         <el-table-column label="Operatoin" width="120px">
           <template v-slot="slotProp">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="openEditParamDiaolog(slotProp.row.attr_id)"></el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row.attr_id)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteParams(slotProp.row.goods_id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,7 +43,8 @@
         :page-sizes="[10, 20, 30, 50]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
+        :total="total"
+        background>
       </el-pagination>
     </el-card>
   </div>
@@ -76,7 +76,21 @@ export default {
       this.total = res.data.total
     },
     openEditParamDiaolog(id) {},
-    deleteParams(id) {},
+    async deleteParams(id) {
+      const confirmRes = await this.$confirm('You\' gonna delete this good, r u sure?', 'Confirmation', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmRes !== 'confirm') {
+        return this.$message.info('cancel deletion')
+      } else {
+        const { data: res } = await this.$http.delete(`goods/${id}`)
+        if (res.meta.status !== 200) return this.$message.error('deletion failed.')
+        this.$message.warning('good deleted.')
+        this.getGoodsList()
+      }
+    },
     handlePsizeChange(newPsize) {
       this.queryInfo.pagesize = newPsize
       this.getGoodsList()
