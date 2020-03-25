@@ -26,17 +26,38 @@
         <el-step title="completed"></el-step>
       </el-steps>
       <!-- tabs section -->
-      <el-tabs
-      :tab-position="tabPosition"
-      style="height: 200px;"
-      class="list_tab"
-      v-model="activeStepIdx">
-        <el-tab-pane label="brief" name="0">item's brief</el-tab-pane>
-        <el-tab-pane label="param" name="1">item param</el-tab-pane>
-        <el-tab-pane label="attr" name="2">item attributes</el-tab-pane>
-        <el-tab-pane label="pic" name="3">item pictures</el-tab-pane>
-        <el-tab-pane label="content" name="4">item content</el-tab-pane>
-      </el-tabs>
+      <el-form
+      :model="addForm"
+      :rules="addFormRules"
+      ref="addFormRef"
+      label-width="100px"
+      class="add-ruleForm"
+      label-position="top"
+      >
+        <el-tabs
+        :tab-position="tabPosition"
+        class="list_tab"
+        v-model="activeStepIdx">
+          <el-tab-pane label="brief" name="0">
+            <el-form-item label="Name" prop="goods_name">
+              <el-input v-model="addForm.goods_name"></el-input>
+            </el-form-item>
+            <el-form-item label="Price" prop="goods_price">
+              <el-input v-model="addForm.goods_price" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="Weight" prop="goods_weight">
+              <el-input v-model="addForm.goods_weight"></el-input>
+            </el-form-item>
+            <el-form-item label="Number" prop="goods_number">
+              <el-input v-model="addForm.goods_number" type="number"></el-input>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="param" name="1">item param</el-tab-pane>
+          <el-tab-pane label="attr" name="2">item attribution</el-tab-pane>
+          <el-tab-pane label="pic" name="3">item pictures</el-tab-pane>
+          <el-tab-pane label="content" name="4">item content</el-tab-pane>
+        </el-tabs>
+      </el-form>
     </el-card>
   </div>
 </template>
@@ -47,7 +68,28 @@ export default {
   data() {
     return {
       activeStepIdx: '0',
-      tabPosition: 'left'
+      tabPosition: 'left',
+      addForm: {
+        goods_name: '',
+        goods_price: 0,
+        goods_weight: 0,
+        goods_number: 0,
+        pics: ''
+      },
+      addFormRules: {
+        goods_name: [
+          { required: true, message: 'please input item\'s name', trigger: 'blur' }
+        ],
+        goods_price: [
+          { required: true, message: 'please input item\'s price', trigger: 'blur' }
+        ],
+        goods_weight: [
+          { required: true, message: 'please input item\'s weight', trigger: 'blur' }
+        ],
+        goods_number: [
+          { required: true, message: 'please input item\'s number', trigger: 'blur' }
+        ]
+      }
     }
   },
   created () {},
