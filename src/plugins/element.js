@@ -33,7 +33,9 @@ import {
   Cascader,
   Alert,
   Tabs,
-  TabPane
+  TabPane,
+  Steps,
+  Step
 } from 'element-ui'
 
 // global register $message
@@ -73,4 +75,6 @@ export default Vue => {
   Vue.component(Alert.name, Alert)
   Vue.component(Tabs.name, Tabs)
   Vue.component(TabPane.name, TabPane)
+  Vue.component(Steps.name, Steps)
+  Vue.component(Step.name, Step)
 }
