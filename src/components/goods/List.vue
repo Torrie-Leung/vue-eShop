@@ -16,7 +16,7 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">New good</el-button>
+          <el-button type="primary" @click="goAddGoods">New good</el-button>
         </el-col>
       </el-row>
       <!-- table -->
@@ -98,6 +98,9 @@ export default {
     handleCurPChange(newPage) {
       this.queryInfo.pagenum = newPage
       this.getGoodsList()
+    },
+    goAddGoods() {
+      this.$router.push('goods/add')
     }
   }
 }
