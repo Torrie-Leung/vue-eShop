@@ -36,6 +36,16 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- pagination -->
+      <el-pagination
+        @size-change="handlePsizeChange"
+        @current-change="handleCurPChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -51,7 +61,7 @@ export default {
         pagesize: 10
       },
       goodsList: [],
-      total: ''
+      total: 0
     }
   },
   created () {
@@ -60,13 +70,21 @@ export default {
   methods: {
     async getGoodsList () {
       const { data: res } = await this.$http.get('goods', { params: this.queryInfo })
-      console.log(res)
+      // console.log(res)
       if (res.meta.status !== 200) return this.$message.error('failed to fetch goods list.')
       this.goodsList = res.data.goods
       this.total = res.data.total
     },
     openEditParamDiaolog(id) {},
-    deleteParams(id) {}
+    deleteParams(id) {},
+    handlePsizeChange(newPsize) {
+      this.queryInfo.pagesize = newPsize
+      this.getGoodsList()
+    },
+    handleCurPChange(newPage) {
+      this.queryInfo.pagenum = newPage
+      this.getGoodsList()
+    }
   }
 }
 </script>
