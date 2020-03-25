@@ -26,7 +26,9 @@
         <el-table-column label="Goods Name" prop="goods_name"></el-table-column>
         <el-table-column label="Goods Price(RMB)" prop="goods_price" width="120px"></el-table-column>
         <el-table-column label="Goods weight" prop="goods_weight" width="120px"></el-table-column>
-        <el-table-column label="Created Time" prop="add_time" width="180px"></el-table-column>
+        <el-table-column label="Created Time" prop="add_time" width="180px">
+          <template v-slot="slotValue">{{slotValue.row.add_time | timeFormat}}</template>
+        </el-table-column>
         <el-table-column label="Operatoin" width="120px">
           <template v-slot="slotProp">
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="openEditParamDiaolog(slotProp.row.attr_id)"></el-button>

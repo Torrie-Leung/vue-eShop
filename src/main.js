@@ -30,6 +30,21 @@ Vue.use(elemUI)
 // Vue.use(G2)
 // Vue.use(View)
 Vue.component('tree-table', TreeTable)
+
+// global filter
+Vue.filter('timeFormat', function(originalVal) {
+  const date = new Date(originalVal)
+  const year = date.getFullYear()
+  // The padStart() method pads the current string with another string (multiple times, if needed) until the resulting string reaches the given length.
+  // The padding is applied from the start of the current string.
+  const month = (date.getMonth() + 1 + '').padStart(2, '0')
+  const day = (date.getDate() + '').padStart(2, '0')
+  const hour = (date.getHours() + '').padStart(2, '0')
+  const minute = (date.getMinutes() + '').padStart(2, '0')
+  const second = (date.getSeconds() + '').padStart(2, '0')
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+})
+
 new Vue({
   router,
   store,
