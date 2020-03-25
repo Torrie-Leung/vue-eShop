@@ -37,7 +37,8 @@
         <el-tabs
         :tab-position="tabPosition"
         class="list_tab"
-        v-model="activeStepIdx">
+        v-model="activeStepIdx"
+        :before-leave="validateTabsChange">
           <el-tab-pane label="brief" name="0">
             <el-form-item label="Name" prop="goods_name">
               <el-input v-model="addForm.goods_name"></el-input>
@@ -50,6 +51,14 @@
             </el-form-item>
             <el-form-item label="Number" prop="goods_number">
               <el-input v-model="addForm.goods_number" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="Category" prop="goods_cat">
+              <el-cascader
+              v-model="addForm.goods_cat"
+              :options="cateList"
+              :props="cateProps"
+              @change="handleCateChange"
+              expand-trigger="hover"></el-cascader>
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="param" name="1">item param</el-tab-pane>
@@ -74,7 +83,7 @@ export default {
         goods_price: 0,
         goods_weight: 0,
         goods_number: 0,
-        pics: ''
+        goods_cat: []
       },
       addFormRules: {
         goods_name: [
@@ -88,12 +97,51 @@ export default {
         ],
         goods_number: [
           { required: true, message: 'please input item\'s number', trigger: 'blur' }
+        ],
+        goods_cat: [
+          { required: true, message: 'please input item\'s category', trigger: 'blur' }
         ]
+      },
+      cateList: [],
+      cateProps: {
+        label: 'cat_name',
+        value: 'cat_id',
+        children: 'children'
       }
     }
   },
-  created () {},
-  methods: {}
+  created () {
+    this.getCateList()
+  },
+  mounted () {
+    setInterval(function() {
+      document.querySelectorAll('.el-cascader-node__label').forEach(el => {
+        el.onclick = function() {
+          if (this.previousElementSibling) this.previousElementSibling.click()
+        }
+      })
+    }, 1000)
+  },
+  methods: {
+    async getCateList() {
+      const { data: res } = await this.$http.get('categories')
+      if (res.meta.status !== 200) return this.$message.error('failed to get categories.')
+      this.cateList = res.data
+      console.log(this.cateList)
+    },
+    handleCateChange() {
+      if (this.addForm.goods_cat.length !== 3) {
+        this.addForm.goods_cat = []
+      }
+    },
+    validateTabsChange(activeName, oldActiveName) {
+      // console.log('go to-', activeName, 'from-', oldActiveName)
+      if (oldActiveName === 0 && this.addForm.goods_cat.length !== 3) {
+        this.$message.info('please select category first.')
+        return false
+      }
+    }
+  }
 }
 </script>
 
