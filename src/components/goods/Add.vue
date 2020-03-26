@@ -62,7 +62,13 @@
               expand-trigger="hover"></el-cascader>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="param" name="1">item param</el-tab-pane>
+          <el-tab-pane label="param" name="1">
+            <!-- rendering item -->
+            <el-form-item
+            :label="item.attr_name"
+            v-for="item in manyTable"
+            :key="item.attr_id"></el-form-item>
+          </el-tab-pane>
           <el-tab-pane label="attr" name="2">item attribution</el-tab-pane>
           <el-tab-pane label="pic" name="3">item pictures</el-tab-pane>
           <el-tab-pane label="content" name="4">item content</el-tab-pane>
@@ -108,7 +114,8 @@ export default {
         label: 'cat_name',
         value: 'cat_id',
         children: 'children'
-      }
+      },
+      manyTable: []
     }
   },
   created () {
@@ -127,6 +134,9 @@ export default {
     async getCateList() {
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) return this.$message.error('failed to get categories.')
+      res.data.forEach(item => {
+        item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
+      })
       this.cateList = res.data
       console.log(this.cateList)
     },
@@ -148,7 +158,8 @@ export default {
         console.log(this.addForm.goods_cat[2])
         const { data: res } = await this.$http.get(`categories/${this.cate_id}/attributes`, { params: { sel: 'many' } })
         if (res.meta.status !== 200) return this.$message.error('failed to get dynamic attrs')
-        console.log(res)
+        this.manyTable = res.data
+        console.log(this.manyTable)
       }
     }
   },
