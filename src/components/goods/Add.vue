@@ -38,7 +38,8 @@
         :tab-position="tabPosition"
         class="list_tab"
         v-model="activeStepIdx"
-        :before-leave="validateTabsChange">
+        :before-leave="validateTabsChange"
+        @tab-click="tabClicked">
           <el-tab-pane label="brief" name="0">
             <el-form-item label="Name" prop="goods_name">
               <el-input v-model="addForm.goods_name"></el-input>
@@ -139,6 +140,24 @@ export default {
       if (oldActiveName === 0 && this.addForm.goods_cat.length !== 3) {
         this.$message.info('please select category first.')
         return false
+      }
+    },
+    async tabClicked() {
+      // console.log(this.activeStepIdx)
+      if (this.activeStepIdx === '1') {
+        console.log(this.addForm.goods_cat[2])
+        const { data: res } = await this.$http.get(`categories/${this.cate_id}/attributes`, { params: { sel: 'many' } })
+        if (res.meta.status !== 200) return this.$message.error('failed to get dynamic attrs')
+        console.log(res)
+      }
+    }
+  },
+  computed: {
+    cate_id() {
+      if (this.addForm.goods_cat.length === 3) {
+        return this.addForm.goods_cat[2]
+      } else {
+        return null
       }
     }
   }
