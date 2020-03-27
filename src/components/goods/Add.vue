@@ -67,7 +67,11 @@
             <el-form-item
             :label="item.attr_name"
             v-for="item in manyTable"
-            :key="item.attr_id"></el-form-item>
+            :key="item.attr_id">
+              <el-checkbox-group v-model="item.attr_vals">
+                <el-checkbox label=""></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="attr" name="2">item attribution</el-tab-pane>
           <el-tab-pane label="pic" name="3">item pictures</el-tab-pane>
@@ -134,9 +138,6 @@ export default {
     async getCateList() {
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) return this.$message.error('failed to get categories.')
-      res.data.forEach(item => {
-        item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
-      })
       this.cateList = res.data
       console.log(this.cateList)
     },
@@ -158,6 +159,9 @@ export default {
         console.log(this.addForm.goods_cat[2])
         const { data: res } = await this.$http.get(`categories/${this.cate_id}/attributes`, { params: { sel: 'many' } })
         if (res.meta.status !== 200) return this.$message.error('failed to get dynamic attrs')
+        res.data.forEach(item => {
+          item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
+        })
         this.manyTable = res.data
         console.log(this.manyTable)
       }
