@@ -69,7 +69,11 @@
             v-for="item in manyTable"
             :key="item.attr_id">
               <el-checkbox-group v-model="item.attr_vals">
-                <el-checkbox label=""></el-checkbox>
+                <el-checkbox
+                border
+                :label="check"
+                v-for="(check, i) in item.attr_vals"
+                :key="i"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-tab-pane>
@@ -159,6 +163,7 @@ export default {
         console.log(this.addForm.goods_cat[2])
         const { data: res } = await this.$http.get(`categories/${this.cate_id}/attributes`, { params: { sel: 'many' } })
         if (res.meta.status !== 200) return this.$message.error('failed to get dynamic attrs')
+        // change string to array
         res.data.forEach(item => {
           item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',')
         })

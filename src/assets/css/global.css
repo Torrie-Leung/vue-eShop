@@ -44,3 +44,6 @@ html,body,#app{
 .el-cascader-panel{
   height: 100%;
 }
+.el-checkbox{
+  margin: 10px 5px !important;
+}
