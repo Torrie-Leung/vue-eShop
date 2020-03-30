@@ -103,6 +103,13 @@
         </el-tabs>
       </el-form>
     </el-card>
+    <!-- pic preview section -->
+    <el-dialog
+    title="pic prview"
+    :visible.sync="isPreview"
+    width="50%">
+      <img :src="previewPath" class="previewImg">
+    </el-dialog>
   </div>
 </template>
 
@@ -149,7 +156,9 @@ export default {
       uplpoadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
       headerObj: {
         Authorization: window.sessionStorage.getItem('token')
-      }
+      },
+      isPreview: false,
+      previewPath: ''
     }
   },
   created () {
@@ -204,6 +213,8 @@ export default {
     },
     handlePreview(file) {
       // console.log(file)
+      this.previewPath = file.response.data.url
+      this.isPreview = true
     },
     handleRemove(file, fileList) {
       // file: pic that has been removed
@@ -246,5 +257,8 @@ export default {
       text-align: center;
     }
   }
+}
+.previewImg{
+  width: 100%;
 }
 </style>
