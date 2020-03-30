@@ -169,6 +169,10 @@ export default {
         })
         this.manyTable = res.data
         console.log(this.manyTable)
+      } else if (this.activeStepIdx === '2') {
+        const { data: res } = await this.$http.get(`categories/${this.cate_id}/attributes`, { params: { sel: 'only' } })
+        if (res.meta.status !== 200) return this.$message.error('failed to get dynamic attrs')
+        console.log(res)
       }
     }
   },
