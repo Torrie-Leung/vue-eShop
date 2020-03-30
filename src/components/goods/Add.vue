@@ -89,7 +89,7 @@
             <el-upload
             :action="uplpoadURL"
             :headers="headerObj"
-            :limit="3"
+            :limit="picNumbers"
             list-type="picture"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
@@ -101,6 +101,10 @@
           </el-tab-pane>
           <el-tab-pane label="content" name="4">
             <!-- vue-quill-editor -->
+            <quill-editor
+            ref="myQuillEditor"
+            v-model="addForm.goods_introduce"/>
+            <el-button type="primary" class="btn-add" @click="addContent">Add Item</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -128,7 +132,8 @@ export default {
         goods_weight: 0,
         goods_number: 0,
         goods_cat: [],
-        pics: []
+        pics: [],
+        goods_introduce: ''
       },
       addFormRules: {
         goods_name: [
@@ -159,6 +164,7 @@ export default {
       headerObj: {
         Authorization: window.sessionStorage.getItem('token')
       },
+      picNumbers: 5,
       isPreview: false,
       previewPath: ''
     }
@@ -231,6 +237,11 @@ export default {
       const picInfo = { pic: response.data.tmp_path }
       this.addForm.pics.push(picInfo)
       console.log(this.addForm)
+    },
+    addContent() {
+      this.$refs.addFormRef.validate(valid => {
+        if (!valid) return this.$message.error('please fill up the reuqired form.')
+      })
     }
   },
   computed: {
@@ -262,5 +273,8 @@ export default {
 }
 .previewImg{
   width: 100%;
+}
+.btn-add{
+  margin-top: 15px !important;
 }
 </style>

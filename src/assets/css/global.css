@@ -47,3 +47,6 @@ html,body,#app{
 .el-checkbox{
   margin: 10px 5px !important;
 }
+.ql-editor{
+  min-height: 300px;
+}
