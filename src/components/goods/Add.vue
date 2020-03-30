@@ -99,7 +99,9 @@
               <div slot="tip" class="el-upload__tip">you should only upload jpg/png file under 500kb.</div>
             </el-upload>
           </el-tab-pane>
-          <el-tab-pane label="content" name="4">item content</el-tab-pane>
+          <el-tab-pane label="content" name="4">
+            <!-- vue-quill-editor -->
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>

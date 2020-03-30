@@ -12,6 +12,11 @@ import './assets/fonts/iconfont.css'
 import elemUI from './plugins/element.js'
 // import vue-table-tree-grid
 import TreeTable from 'vue-table-with-tree-grid'
+// import vue-quill-editor
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css' // import styles
+import 'quill/dist/quill.snow.css' // for snow theme
+import 'quill/dist/quill.bubble.css' // for bubble theme
 // import axios
 import axios from 'axios'
 // request root path
@@ -30,6 +35,7 @@ Vue.use(elemUI)
 // Vue.use(G2)
 // Vue.use(View)
 Vue.component('tree-table', TreeTable)
+Vue.use(VueQuillEditor)
 
 // global filter
 Vue.filter('timeFormat', function(originalVal) {
