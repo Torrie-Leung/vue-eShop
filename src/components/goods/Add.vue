@@ -10,7 +10,7 @@
     <!-- card section -->
     <el-card>
       <el-alert
-        title="警告提示的文案"
+        title="some tips"
         type="info"
         center
         show-icon
@@ -77,8 +77,25 @@
               </el-checkbox-group>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="attr" name="2">item attribution</el-tab-pane>
-          <el-tab-pane label="pic" name="3">item pictures</el-tab-pane>
+          <el-tab-pane label="attr" name="2">
+            <el-form-item
+            :label="item.attr_name"
+            v-for="item in onlyTable"
+            :key="item.attr_id">
+              <el-input v-model="item.attr_vals"></el-input>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="pic" name="3">
+            <el-upload
+            :action="uplpoadURL"
+            :limit="3"
+            list-type="picture"
+            :on-preview="handlePreview"
+            multiple>
+              <el-button type="primary" size="small">Upload images</el-button>
+              <div slot="tip" class="el-upload__tip">you should only upload jpg/png file under 500kb.</div>
+            </el-upload>
+          </el-tab-pane>
           <el-tab-pane label="content" name="4">item content</el-tab-pane>
         </el-tabs>
       </el-form>
@@ -123,7 +140,9 @@ export default {
         value: 'cat_id',
         children: 'children'
       },
-      manyTable: []
+      manyTable: [],
+      onlyTable: [],
+      uplpoadURL: 'http://127.0.0.1:8888/api/private/v1/upload'
     }
   },
   created () {
@@ -171,9 +190,13 @@ export default {
         console.log(this.manyTable)
       } else if (this.activeStepIdx === '2') {
         const { data: res } = await this.$http.get(`categories/${this.cate_id}/attributes`, { params: { sel: 'only' } })
-        if (res.meta.status !== 200) return this.$message.error('failed to get dynamic attrs')
+        if (res.meta.status !== 200) return this.$message.error('failed to get static params')
         console.log(res)
+        this.onlyTable = res.data
       }
+    },
+    handlePreview(file) {
+      console.log(file)
     }
   },
   computed: {

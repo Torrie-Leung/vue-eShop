@@ -37,7 +37,8 @@ import {
   Steps,
   Step,
   CheckboxGroup,
-  Checkbox
+  Checkbox,
+  Upload
 } from 'element-ui'
 
 // global register $message
@@ -81,4 +82,5 @@ export default Vue => {
   Vue.component(Step.name, Step)
   Vue.component(CheckboxGroup.name, CheckboxGroup)
   Vue.component(Checkbox.name, Checkbox)
+  Vue.component(Upload.name, Upload)
 }
