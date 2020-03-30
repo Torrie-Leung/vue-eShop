@@ -209,6 +209,9 @@ export default {
       // file: pic that has been removed
       // fileList : the remaining pics list
       // console.log(file, fileList)
+      const filePath = file.response.data.tmp_path
+      const index = this.addForm.pics.findIndex(x => x.pic === filePath)
+      this.addForm.pics.splice(index, 1)
     },
     handleSucc(response) {
       if (response.meta.status !== 200) return this.$message.error('oops! failed to upload pic')
