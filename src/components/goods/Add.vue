@@ -88,9 +88,11 @@
           <el-tab-pane label="pic" name="3">
             <el-upload
             :action="uplpoadURL"
+            :headers="headerObj"
             :limit="3"
             list-type="picture"
             :on-preview="handlePreview"
+            :on-remove="handleRemove"
             multiple>
               <el-button type="primary" size="small">Upload images</el-button>
               <div slot="tip" class="el-upload__tip">you should only upload jpg/png file under 500kb.</div>
@@ -142,7 +144,10 @@ export default {
       },
       manyTable: [],
       onlyTable: [],
-      uplpoadURL: 'http://127.0.0.1:8888/api/private/v1/upload'
+      uplpoadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      }
     }
   },
   created () {
@@ -197,6 +202,11 @@ export default {
     },
     handlePreview(file) {
       console.log(file)
+    },
+    handleRemove(file, fileList) {
+      // file: pic that has been removed
+      // fileList : the remaining pics list
+      console.log(file, fileList)
     }
   },
   computed: {
