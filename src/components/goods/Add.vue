@@ -93,6 +93,7 @@
             list-type="picture"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
+            :on-success="handleSucc"
             multiple>
               <el-button type="primary" size="small">Upload images</el-button>
               <div slot="tip" class="el-upload__tip">you should only upload jpg/png file under 500kb.</div>
@@ -117,7 +118,8 @@ export default {
         goods_price: 0,
         goods_weight: 0,
         goods_number: 0,
-        goods_cat: []
+        goods_cat: [],
+        pics: []
       },
       addFormRules: {
         goods_name: [
@@ -167,7 +169,7 @@ export default {
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) return this.$message.error('failed to get categories.')
       this.cateList = res.data
-      console.log(this.cateList)
+      // console.log(this.cateList)
     },
     handleCateChange() {
       if (this.addForm.goods_cat.length !== 3) {
@@ -201,12 +203,18 @@ export default {
       }
     },
     handlePreview(file) {
-      console.log(file)
+      // console.log(file)
     },
     handleRemove(file, fileList) {
       // file: pic that has been removed
       // fileList : the remaining pics list
-      console.log(file, fileList)
+      // console.log(file, fileList)
+    },
+    handleSucc(response) {
+      if (response.meta.status !== 200) return this.$message.error('oops! failed to upload pic')
+      const picInfo = { pic: response.data.tmp_path }
+      this.addForm.pics.push(picInfo)
+      console.log(this.addForm)
     }
   },
   computed: {
